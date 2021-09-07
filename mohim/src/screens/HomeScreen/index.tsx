@@ -24,7 +24,8 @@ interface Product {
   price: number;
   oldPrice?: number;
 }
-const HomeScreen = () => {
+const HomeScreen = props => {
+  console.log('searchValue: ', props.searchValue);
   // dummyData
   const [data, setData] = useState<Product[]>([
     {
