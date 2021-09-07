@@ -9,8 +9,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginVertical: 3,
   },
+  rootH: {
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 10,
+    backgroundColor: 'white',
+    marginVertical: 3,
+    marginHorizontal: 3,
+  },
   image: {
     flex: 2,
+    height: 150,
+    resizeMode: 'contain',
+    marginLeft: 10,
+  },
+  imageH: {
+    flex: 3,
     height: 150,
     resizeMode: 'contain',
     marginLeft: 10,
@@ -19,8 +33,16 @@ const styles = StyleSheet.create({
     flex: 3,
     padding: 10,
   },
+  rightContainerH: {
+    flex: 2,
+    padding: 10,
+  },
   title: {
     fontSize: 18,
+  },
+  titleH: {
+    fontSize: 18,
+    width: 140,
   },
   ratingsContainer: {
     flexDirection: 'row',

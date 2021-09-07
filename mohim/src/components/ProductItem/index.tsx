@@ -14,22 +14,27 @@ interface ProductItemProps {
     price: number;
     oldPrice?: number | undefined;
   };
+  horizon?: boolean;
 }
 
 const ProductItem = (props: ProductItemProps) => {
   // props
-  const {item} = props;
+  const {item, horizon} = props;
 
   const onPress = () => {
     //navigate to product details page
     console.warn('product pressed');
   };
-
   return (
-    <Pressable style={styles.root} onPress={onPress}>
-      <Image style={styles.image} source={{uri: item.image}} />
-      <View style={styles.rightContainer}>
-        <Text style={styles.title} numberOfLines={3}>
+    <Pressable style={horizon ? styles.rootH : styles.root} onPress={onPress}>
+      <Image
+        style={horizon ? styles.imageH : styles.image}
+        source={{uri: item.image}}
+      />
+      <View style={horizon ? styles.rightContainerH : styles.rightContainer}>
+        <Text
+          style={horizon ? styles.titleH : styles.title}
+          numberOfLines={horizon ? 2 : 3}>
           {item.title}
         </Text>
         <View style={styles.ratingsContainer}>
