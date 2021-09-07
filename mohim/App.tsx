@@ -8,13 +8,10 @@
  * @format
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+
+import RNBootSplash from 'react-native-bootsplash';
 
 // screens
 import HomeScreen from './src/screens/HomeScreen';
@@ -26,6 +23,13 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+  useEffect(() => {
+    const bootSplashScreen = async () => {
+      await RNBootSplash.hide({fade: true});
+    };
+    bootSplashScreen();
+  }, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>
