@@ -44,13 +44,13 @@ const HomeScreen = () => {
       oldPrice: 20.95,
     },
   ]);
-  // let data = [];
   const generateData = () => {
     let result = [];
     for (let i = 0; i < 5; i++) {
       const dataObj: Product = {
         id: i.toString(),
-        title: 'product titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct title',
+        title:
+          'product titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct title',
         description: 'adfafsadfadsfasdfasdfasdfasdfadsfaf',
         image:
           'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
