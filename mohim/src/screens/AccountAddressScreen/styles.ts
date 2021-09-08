@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   newAddressCity: {
+    color: 'black',
     backgroundColor: 'white',
     padding: 5,
     marginTop: 10,

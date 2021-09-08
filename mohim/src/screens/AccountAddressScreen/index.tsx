@@ -1,14 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Modal,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, Text, TextInput, Pressable, Modal, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
@@ -123,7 +115,7 @@ const AccountAddressScreen = () => {
       resetScrollToCoords={{x: 0, y: 0}}
       style={styles.addressContainer}>
       <View>
-        {addresses.map((adrs, index) => (
+        {addresses?.map((adrs, index) => (
           <View key={index} style={styles.addressItem}>
             <View style={styles.addressTextContainer}>
               <Text key={`${index}-label`} style={styles.addressLabel}>
@@ -173,14 +165,17 @@ const AccountAddressScreen = () => {
             value={newAddressInput}
             onChangeText={setNewAddressInput}
           />
-          <TextInput
-            style={styles.newAddressCity}
-            placeholder={'- Choose a City -'}
-            textAlign={'center'}
-            editable={false}
-            value={city}
-            onPressOut={() => setCityModal(!cityModal)}
-          />
+          {/* had to put textinput in a Pressable to work on Android */}
+          <Pressable onPress={() => setCityModal(!cityModal)}>
+            <TextInput
+              style={styles.newAddressCity}
+              placeholder={'- Choose a City -'}
+              textAlign={'center'}
+              editable={false}
+              value={city}
+              onPressOut={() => setCityModal(!cityModal)}
+            />
+          </Pressable>
           <Button
             text={'submit'}
             onPress={onSubmitNewAddress}
