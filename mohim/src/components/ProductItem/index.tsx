@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {View, Text, Pressable, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -21,9 +22,10 @@ const ProductItem = (props: ProductItemProps) => {
   // props
   const {item, horizon} = props;
 
+  const navigation = useNavigation();
   const onPress = () => {
     //navigate to product details page
-    console.warn('product pressed');
+    navigation.navigate('ProductScreen');
   };
   return (
     <Pressable style={horizon ? styles.rootH : styles.root} onPress={onPress}>

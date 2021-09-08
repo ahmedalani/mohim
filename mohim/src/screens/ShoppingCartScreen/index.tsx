@@ -1,15 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useCallback} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, FlatList, Text, Alert} from 'react-native';
 import Button from '../../components/Button';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 // components
 import CartProductItem from '../../components/CartProductItem';

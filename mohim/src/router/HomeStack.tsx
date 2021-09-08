@@ -2,7 +2,7 @@
 import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
-// import ProductScreen from '../screens/ProductScreen';
+import ProductScreen from '../screens/ProductScreen';
 import {SafeAreaView, TextInput, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 // Screens
@@ -58,7 +58,7 @@ const HomeStack = () => {
       <Stack.Screen name={'HomeScreen'} options={{title: 'Home Page'}}>
         {() => <HomeScreen searchValue={searchValue} />}
       </Stack.Screen>
-      {/* <Stack.Screen component={ProductScreen} name={'ProductScreen'} /> */}
+      <Stack.Screen component={ProductScreen} name={'ProductScreen'} />
     </Stack.Navigator>
   );
 };
