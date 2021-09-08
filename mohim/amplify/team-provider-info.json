@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mohim-dev-135556-authRole",
+      "UnauthRoleArn": "arn:aws:iam::095818064553:role/amplify-mohim-dev-135556-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::095818064553:role/amplify-mohim-dev-135556-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-mohim-dev-135556-deployment",
+      "UnauthRoleName": "amplify-mohim-dev-135556-unauthRole",
+      "StackName": "amplify-mohim-dev-135556",
+      "StackId": "arn:aws:cloudformation:eu-central-1:095818064553:stack/amplify-mohim-dev-135556/5bf93b60-1093-11ec-9572-06b4beb8a7dc",
+      "AmplifyAppId": "d24sei8z0gwwd8"
+    }
+  }
+}
