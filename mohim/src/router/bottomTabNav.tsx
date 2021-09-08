@@ -4,6 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 // Screen Stacks
 import HomeStack from './HomeStack';
+import ProfileStack from './ProfileStack';
 // import ShoppingCartStack from './ShoppingCartStack';
 // import ProfileStack from './ProfileStack';
 
@@ -31,7 +32,7 @@ const BottomTabNav = () => {
         }}
       />
       <Tab.Screen
-        component={HomeStack}
+        component={ProfileStack}
         name={'profile'}
         options={{
           tabBarIcon: ({color}) => (
