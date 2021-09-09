@@ -12,11 +12,7 @@ import MenuScreen from '../screens/MenueScreen';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabNav = ({
-  setIsSignedIn,
-}: {
-  setIsSignedIn: (arg0: boolean) => void;
-}) => {
+const BottomTabNav = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -53,14 +49,14 @@ const BottomTabNav = ({
         }}
       />
       <Tab.Screen
+        component={MenuScreen}
         name={'more'}
         options={{
           tabBarIcon: ({color}) => (
             <Entypo name="menu" color={color} size={26} />
           ),
-        }}>
-        {() => <MenuScreen setIsSignedIn={setIsSignedIn} />}
-      </Tab.Screen>
+        }}
+      />
     </Tab.Navigator>
   );
 };

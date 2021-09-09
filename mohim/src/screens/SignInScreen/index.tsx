@@ -1,22 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {Auth} from 'aws-amplify';
 import Button from '../../components/Button';
 import styles from './styles';
 
-const SignInScreen = ({
-  setIsSignedIn,
-}: {
-  setIsSignedIn: (arg0: boolean) => void;
-}) => {
+const SignInScreen = () => {
   const fetchUser = async () => {
     const user = await Auth.currentAuthenticatedUser().catch(err =>
-      console.log(err),
+      console.warn('from signInScreen: ', err),
     );
     if (user) {
-      setIsSignedIn(true);
+      console.warn('setting state to true');
+      // setIsSignedIn(true);
     }
   };
+  // useEffect(() => {
+  //   fetchUser();
+  // }, []);
   return (
     <View style={styles.root}>
       <Button

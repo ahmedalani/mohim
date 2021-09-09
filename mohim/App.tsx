@@ -82,7 +82,7 @@ const App = () => {
     <View style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} />
       <SafeAreaProvider>
-        <Router />
+        <Router user={user} />
       </SafeAreaProvider>
     </View>
   );

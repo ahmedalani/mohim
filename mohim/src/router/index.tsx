@@ -1,24 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import BottomTabNav from './bottomTabNav';
 import SignInScreen from '../screens/SignInScreen';
 const Root = createStackNavigator();
 
-const Router = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
+const Router = ({user}) => {
+  console.log('user from router: ', user);
   return (
     <NavigationContainer>
       <Root.Navigator screenOptions={{headerShown: false}}>
-        {isSignedIn ? (
-          <Root.Screen name={'HomeTabs'}>
-            {() => <BottomTabNav setIsSignedIn={setIsSignedIn} />}
-          </Root.Screen>
+        {user ? (
+          <Root.Screen component={BottomTabNav} name={'HomeTabs'} />
         ) : (
-          <Root.Screen name={'signInScreen'}>
-            {() => <SignInScreen setIsSignedIn={setIsSignedIn} />}
-          </Root.Screen>
+          <Root.Screen component={SignInScreen} name={'signInScreen'} />
         )}
       </Root.Navigator>
     </NavigationContainer>
