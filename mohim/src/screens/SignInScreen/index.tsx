@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View} from 'react-native';
-import {Auth, Hub} from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 import Button from '../../components/Button';
 import styles from './styles';
 
@@ -17,18 +17,6 @@ const SignInScreen = ({
       setIsSignedIn(true);
     }
   };
-  useEffect(() => {
-    Hub.listen('auth', ({payload: {event, data}}) => {
-      if (event === 'signIn') {
-        setIsSignedIn(true);
-      } else if (event === 'signOut') {
-        setIsSignedIn(false);
-      }
-    });
-    Auth.currentAuthenticatedUser()
-      .then(user => console.log(user))
-      .catch(() => console.log('Not signed in'));
-  }, [setIsSignedIn]);
   return (
     <View style={styles.root}>
       <Button
