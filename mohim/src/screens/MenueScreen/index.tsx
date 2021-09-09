@@ -1,11 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {SafeAreaView} from 'react-native';
+import {Auth} from 'aws-amplify';
 import Button from '../../components/Button';
 
-const MenuScreen = () => {
-  const onLogout = () => {
-    console.log('logout');
+const MenuScreen = ({
+  setIsSignedIn,
+}: {
+  setIsSignedIn: (arg0: boolean) => void;
+}) => {
+  const onLogout = async () => {
+    await Auth.signOut().then(() => {
+      setIsSignedIn(false);
+    });
   };
   return (
     <SafeAreaView>

@@ -10,6 +10,11 @@
       "StackName": "amplify-mohim-dev-135556",
       "StackId": "arn:aws:cloudformation:eu-central-1:095818064553:stack/amplify-mohim-dev-135556/5bf93b60-1093-11ec-9572-06b4beb8a7dc",
       "AmplifyAppId": "d24sei8z0gwwd8"
+    },
+    "categories": {
+      "auth": {
+        "mohim261c094a": {}
+      }
     }
   }
 }

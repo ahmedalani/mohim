@@ -14,8 +14,13 @@ import Router from './src/router';
 
 import RNBootSplash from 'react-native-bootsplash';
 
+import Amplify from 'aws-amplify';
+import config from './src/aws-exports';
+Amplify.configure(config);
+
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
