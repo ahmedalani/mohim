@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {Auth} from 'aws-amplify';
 import Button from '../../components/Button';
@@ -14,9 +14,6 @@ const SignInScreen = () => {
       // setIsSignedIn(true);
     }
   };
-  // useEffect(() => {
-  //   fetchUser();
-  // }, []);
   return (
     <View style={styles.root}>
       <Button
