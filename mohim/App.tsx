@@ -18,6 +18,8 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  Image,
+  Platform,
 } from 'react-native';
 import Router from './src/router';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
@@ -103,48 +105,61 @@ const App = () => {
       <SafeAreaProvider>
         <Router user={user} />
         {user && (
-          <Modal animationType="fade" transparent={true} visible={true}>
+          <Modal animationType="fade" transparent={true} visible={!signModal}>
             <Pressable
               onPress={() => setSignModal(!signModal)}
-              style={styles.centeredView}
-            />
-            <View style={styles.modalButtonContainer}>
-              <GoogleSigninButton
-                style={styles.googleButton}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Dark}
-                onPress={async () => {
-                  await Auth.federatedSignIn({provider: 'Facebook'}).then(() =>
-                    fetchUser(),
-                  );
-                  return;
-                }}
-              />
-              <Button
-                text="Sign in with Facebook"
-                onPress={async () => {
-                  await Auth.federatedSignIn({provider: 'Facebook'}).then(() =>
-                    fetchUser(),
-                  );
-                  return;
-                }}
-              />
-              <Pressable
-                onPress={async () => {
-                  await Auth.federatedSignIn({
-                    provider: 'SignInWithApple',
-                  }).then(() => fetchUser());
-                  return;
-                }}
-                style={styles.applePress}>
-                <AntDesign name="apple1" color={'black'} size={25} />
-                <Text>Sign in with Apple</Text>
-              </Pressable>
-              <Button
-                text="Launch Hosted UI"
-                onPress={() => Auth.federatedSignIn()}
-              />
-            </View>
+              style={styles.modalRoot}>
+              <View style={styles.modalButtonContainer}>
+                <Text style={styles.modalTitle}>Sign in to continue</Text>
+                <View style={{}}>
+                  <Pressable
+                    onPress={async () => {
+                      await Auth.federatedSignIn({provider: 'Google'}).then(() =>
+                        fetchUser(),
+                      );
+                      return;
+                    }}
+                    style={styles.googlePress}>
+                    <Image
+                      style={styles.googleLogo}
+                      source={require('./src/data/Google-Symbol.png')}
+                    />
+                    <Text style={styles.googleText}> Sign in with Google</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={async () => {
+                      await Auth.federatedSignIn({provider: 'Facebook'}).then(() =>
+                        fetchUser(),
+                      );
+                      return;
+                    }}
+                    style={styles.facebookPress}>
+                    <AntDesign name="facebook-square" color={'white'} size={25} />
+                    <Text style={styles.facebookText}> Sign in with Facebook</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={async () => {
+                      await Auth.federatedSignIn({ provider: 'SignInWithApple'}).then(() =>
+                        fetchUser(),
+                      );
+                      return;
+                    }}
+                    style={styles.applePress}>
+                    <AntDesign name="apple1" color={'white'} size={25} />
+                    <Text style={styles.appleText}> Sign in with Apple</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => Auth.federatedSignIn()}
+                    style={styles.hostedUIPress}>
+                    <Image
+                      style={styles.mhmLogo}
+                      source={require('./src/logo/logoT4.png')}
+                    />
+                    <Text style={styles.hostedUIText}> MHM username</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Pressable>
           </Modal>
         )}
       </SafeAreaProvider>
@@ -152,41 +167,128 @@ const App = () => {
   );
 };
 const styles = StyleSheet.create({
-  centeredView: {
+  modalRoot: {
     flex: 1,
-    backgroundColor: '#52aebc',
-    opacity: 0.2,
+    backgroundColor: '#52aebc50',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
+    // marginBottom: 10,
+  },
+  modalTitle: {
+    fontWeight: 'bold',
+    fontSize: 30,
+    marginVertical: 10,
   },
   modalButtonContainer: {
     backgroundColor: '#ffffff',
     paddingHorizontal: '5%',
-    paddingBottom: '60%',
-    paddingTop: 5,
+    // paddingBottom: 60,
+    // paddingTop: 5,
     alignItems: 'center',
+    // margin: 60,
+    // opacity: 1,
+    height: '40%',
+    borderRadius: 15,
   },
-  googleButton: {
-    width: 192,
-    height: 48,
+  // googleButton: {
+  //   width: 192,
+  //   height: 48,
+  // },
+  googlePress: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderColor: 'grey',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 10,
+    marginTop: 15,
+    marginBottom: 5,
+    width: 200,
+  },
+  googleLogo: {
+    height: 25,
+    width: 25,
+  },
+  googleText: {
+    color: '#606060',
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
+  },
+  facebookPress: {
+    backgroundColor: '#3c5c9c',
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#3b5998',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+    marginVertical: 5,
+    width: 200,
+  },
+  facebookText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
   applePress: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
     borderColor: 'black',
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
+    width: 200,
+    marginVertical: 5,
   },
-  appleButtonContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  appleText: {
+    paddingHorizontal: 12,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  hostedUIPress: {
+    // backgroundColor: '#52aebc',
+    // borderWidth: 1,
+    // borderRadius: 5,
+    // borderColor: 'black',
+    // flexDirection: 'row',
+    // padding: 10,
+    // marginVertical: 5,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: 'space-between',
+    borderColor: 'grey',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 10,
+    // marginTop: 15,
+    marginVertical: 5,
+    width: 200,
   },
-  appleBtn: {height: 44, width: 200},
+  mhmLogo: {
+    height: 25,
+    width: 45,
+  },
+  hostedUIText: {
+    // paddingHorizontal: 12,
+    // fontWeight: 'bold',
+    // color: 'black',
+    color: '#606060',
+    paddingHorizontal: 10,
+    fontWeight: 'bold',
+  },
+  // appleButtonContainer: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   backgroundColor: 'white',
+  // },
+  // appleBtn: {height: 44, width: 200},
 });
 
 export default App;
