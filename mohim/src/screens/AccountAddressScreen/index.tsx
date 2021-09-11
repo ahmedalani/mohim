@@ -1,6 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useRef} from 'react';
-import {View, Text, TextInput, Pressable, Modal, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Modal,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
@@ -9,15 +17,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Button from '../../components/Button';
 import styles from './styles';
 
+import {Auth} from 'aws-amplify';
+import {DataStore} from 'aws-amplify';
+
 // DATA
 import cities from '../../data/cities';
-interface Address {
-  id: 'a1';
-  userSub: 'userSub';
-  lable: 'Address 33';
-  addressText: 'addressText is this line of text';
-  city: 'city name';
-}
+import {Address} from '../../models';
+
 const AccountAddressScreen = () => {
   // State
   const [addresses, setAddresses] = useState<Address[] | undefined>(undefined);
@@ -33,6 +39,20 @@ const AccountAddressScreen = () => {
   const [cityModal, setCityModal] = useState(false);
   const [city, setCity] = useState(cities[0].value);
 
+  const fetchUserAddresses = async () => {
+    const userData = await Auth.currentAuthenticatedUser();
+    return DataStore.query(Address, c =>
+      c.userSub('eq', userData.attributes.sub),
+    )
+      .then(res => {
+        setAddresses(res);
+      })
+      .catch(err => console.log(err));
+  };
+  useEffect(() => {
+    fetchUserAddresses();
+  }, []);
+
   const onSubmitNewAddress = () => {
     if (!newAddressInput) {
       Alert.alert('please fill new address to proceed');
@@ -43,10 +63,59 @@ const AccountAddressScreen = () => {
       return;
     }
 
+    const postAddressToDatabase = async () => {
+      const userData = await Auth.currentAuthenticatedUser();
+      let lableIndex = '';
+      if (addresses) {
+        let index = addresses?.length + 1;
+        lableIndex = index.toString();
+      }
+      await DataStore.save(
+        new Address({
+          userSub: userData.attributes.sub,
+          lable: `Address ${lableIndex}`,
+          addressText: newAddressInput,
+          city,
+        }),
+      );
+    };
+    postAddressToDatabase();
+    fetchUserAddresses();
     setNewAddressInput('');
   };
 
+  // subscribe to datastore for each address item
+  useEffect(() => {
+    const subscriptions = addresses?.map(ad =>
+      DataStore.observe(Address, ad.id).subscribe(msg => {
+        if (msg.opType === 'UPDATE') {
+          setAddresses(curAddresses => {
+            return (
+              // console.log('yo from inside curr'),
+              curAddresses?.map(adt => {
+                if (adt.id !== msg.element.id) {
+                  return adt;
+                }
+                return {
+                  ...adt,
+                  ...msg.element,
+                };
+              })
+            );
+          });
+        }
+        // console.log(msg.model, msg.opType, msg.element);
+      }),
+    );
+    return () => {
+      subscriptions?.forEach(sub => sub.unsubscribe());
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleAddressEdit = async (action: string, lable?: string) => {
+    //add error handling: if address is the same (no edit required) make sure to not submit, backend will fail with "error: createdAt read only"
     // submit editing
     const submitEdit = async () => {
       const curAddress = addresses?.filter(a => a.lable === lable)[0];
@@ -54,14 +123,29 @@ const AccountAddressScreen = () => {
         Alert.alert('address not found!');
         return;
       }
-      // error handling: if address is the same (no edit required) make sure to not submit, backend will fail with "error: createdAt read only"
       if (
         !existingAddressEdit ||
         existingAddressEdit === curAddress.addressText
       ) {
         return;
       }
-      setExistingAddressEdit(undefined);
+      const original: Address | undefined = await DataStore.query(
+        Address,
+        curAddress.id,
+      );
+      if (original) {
+        await DataStore.save(
+          Address.copyOf(original, updated => {
+            updated.addressText =
+              existingAddressEdit || curAddress?.addressText;
+          }),
+        )
+          .then(() => {
+            setExistingAddressEdit(undefined);
+            fetchUserAddresses();
+          })
+          .catch(err => console.log(curAddress?.addressText, '❌ ✍️ ', err));
+      }
     };
     // start editing
     if (action === 'START') {
@@ -96,7 +180,9 @@ const AccountAddressScreen = () => {
         {
           text: 'Yes',
           onPress: async () => {
-            console.log('Deleted!');
+            await DataStore.delete(addressToDelete).then(() =>
+              updateAddressLable(),
+            );
           },
         },
         // The "No" button
@@ -107,15 +193,63 @@ const AccountAddressScreen = () => {
       ],
     );
   };
-  // if (!addresses) {
-  //   return <ActivityIndicator />;
-  // }
+  // update all addresses lables after deleting an address
+  const updateAddressLable = async () => {
+    const userData = await Auth.currentAuthenticatedUser();
+    // query all user addresses
+    await DataStore.query(Address, c =>
+      c.userSub('eq', userData.attributes.sub),
+    ).then(async res => {
+      // map over updated address [] from db
+      await Promise.all(
+        res.map(async (adres, i) => {
+          // create the new lable
+          let labelIndex = `Address ${(i + 1).toString()}`;
+          // query the original item from db
+          const original = await DataStore.query(Address, adres.id);
+          // check if lable needs to be updated and appropriately update
+          if (original && original.lable !== labelIndex) {
+            await DataStore.save(
+              Address.copyOf(original, updated => {
+                updated.lable = labelIndex;
+              }),
+            ).catch(err => console.log('accountaddressscreen line216 ', err));
+          }
+        }),
+      )
+        .then(() => {
+          fetchUserAddresses();
+        })
+        .catch(err => {
+          console.log('❌', err);
+          // becuase sometimes we get error from backend even though request went through and got excuted.
+          // posibly because internet connection is so slow
+          fetchUserAddresses();
+        });
+    });
+  };
+  // sort function to display addresses by lable incrementall
+  // returns a sorted addresses array of models (obj)
+  const sortedAddresses = (arr: Address[]) => {
+    const res = arr?.sort((a, b) => {
+      // eslint-disable-next-line radix
+      let aNum = parseInt(a.lable.charAt(a.lable.length - 1));
+      // eslint-disable-next-line radix
+      let bNum = parseInt(b.lable.charAt(b.lable.length - 1));
+      return aNum - bNum;
+    });
+    return res;
+  };
+
+  if (!addresses) {
+    return <ActivityIndicator />;
+  }
   return (
     <KeyboardAwareScrollView
       resetScrollToCoords={{x: 0, y: 0}}
       style={styles.addressContainer}>
       <View>
-        {addresses?.map((adrs, index) => (
+        {sortedAddresses(addresses).map((adrs, index) => (
           <View key={index} style={styles.addressItem}>
             <View style={styles.addressTextContainer}>
               <Text key={`${index}-label`} style={styles.addressLabel}>
@@ -165,11 +299,10 @@ const AccountAddressScreen = () => {
             value={newAddressInput}
             onChangeText={setNewAddressInput}
           />
-          {/* had to put textinput in a Pressable to work on Android */}
+          {/* had to wrap the textInput in a Pressable to work on android */}
           <Pressable onPress={() => setCityModal(!cityModal)}>
             <TextInput
               style={styles.newAddressCity}
-              placeholder={'- Choose a City -'}
               textAlign={'center'}
               editable={false}
               value={city}

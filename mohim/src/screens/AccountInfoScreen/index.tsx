@@ -1,15 +1,14 @@
 import React from 'react';
-import {useRoute, RouteProp} from '@react-navigation/native';
 import {View, Text, TextInput} from 'react-native';
 import styles from './styles';
 
-const AccountInfoScreen = () => {
-  //
-  const route: RouteProp<
-    {params: {userName: string; phoneNumber: number; userEmail: string}},
-    'params'
-  > = useRoute();
-
+const AccountInfoScreen = ({
+  user,
+}: {
+  user: {
+    attributes: {username: string; phonenumber: string; email: string};
+  } | null;
+}) => {
   return (
     <View>
       <View style={styles.title}>
@@ -20,13 +19,13 @@ const AccountInfoScreen = () => {
           Ahmed Hussain (Static)
         </TextInput>
         <TextInput editable={false} style={styles.infoItem}>
-          {route.params.userName}
+          {user?.attributes.username || 'username not found'}
         </TextInput>
         <TextInput editable={false} style={styles.infoItem}>
-          {route.params.phoneNumber}
+          {user?.attributes.phonenumber || 'phonenumber not found'}
         </TextInput>
         <TextInput editable={false} style={styles.infoItem}>
-          {route.params.userEmail}
+          email: {user?.attributes.email}
         </TextInput>
       </View>
     </View>

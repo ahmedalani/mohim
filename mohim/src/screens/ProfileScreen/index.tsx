@@ -22,17 +22,10 @@ const ProfileScreen = ({
 }) => {
   // state
   const [showModal, setShowModal] = useState(false);
-  const [userName, setUserName] = useState('someUser');
-  const [userEmail, setUserEmail] = useState('user Email');
-  const [phoneNumber, setPhoneNumber] = useState('user Phone#');
 
   const navigation = useNavigation();
   const handleActionInfo = () => {
-    navigation.navigate('AccountInfoScreen', {
-      userName,
-      userEmail,
-      phoneNumber,
-    });
+    navigation.navigate('AccountInfoScreen');
   };
   const handleActionLanguage = () => {
     navigation.navigate('LanguageScreen');

@@ -13,7 +13,9 @@ const ProfileStack = ({
   user,
   fetchUser,
 }: {
-  user: {} | null;
+  user: {
+    attributes: {username: string; phonenumber: string; email: string};
+  } | null;
   fetchUser: () => void;
 }) => {
   return (
@@ -27,7 +29,7 @@ const ProfileStack = ({
         }}
       />
       <Stack.Screen
-        component={AccountInfoScreen}
+        children={() => <AccountInfoScreen user={user} />}
         name={'AccountInfoScreen'}
         options={{
           title: 'Your Profile Info 👤',
