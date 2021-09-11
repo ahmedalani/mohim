@@ -9,11 +9,17 @@ import AccountAddressScreen from '../screens/AccountAddressScreen';
 
 const Stack = createStackNavigator();
 
-const ProfileStack = () => {
+const ProfileStack = ({
+  user,
+  fetchUser,
+}: {
+  user: {} | null;
+  fetchUser: () => void;
+}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        component={ProfileScreen}
+        children={() => <ProfileScreen user={user} fetchUser={fetchUser} />}
         name={'ProfileScreen'}
         options={{
           title: 'Your Profile 👤',

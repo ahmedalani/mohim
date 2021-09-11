@@ -12,7 +12,13 @@ import MenuScreen from '../screens/MenueScreen';
 
 const Tab = createBottomTabNavigator();
 
-const BottomTabNav = () => {
+const BottomTabNav = ({
+  user,
+  fetchUser,
+}: {
+  user: {} | null;
+  fetchUser: () => void;
+}) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -31,7 +37,7 @@ const BottomTabNav = () => {
         }}
       />
       <Tab.Screen
-        component={ProfileStack}
+        children={() => <ProfileStack user={user} fetchUser={fetchUser} />}
         name={'profile'}
         options={{
           tabBarIcon: ({color}) => (
