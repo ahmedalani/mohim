@@ -40,5 +40,11 @@
         }
       }
     }
+  },
+  "storage": {
+    "mohimStorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }
