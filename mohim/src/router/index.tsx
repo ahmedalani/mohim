@@ -6,17 +6,17 @@ const Root = createStackNavigator();
 
 const Router = ({
   user,
-  fetchUser,
 }: {
-  user: {username: string; attributes: {sub: string; email: string}} | null;
-  fetchUser: () => void;
+  user: {
+    attributes: {username: string; phonenumber: string; email: string};
+  } | null;
 }) => {
   console.log('user from router: ', user?.attributes.email);
   return (
     <NavigationContainer>
       <Root.Navigator screenOptions={{headerShown: false}}>
         <Root.Screen name={'HomeTabs'}>
-          {() => <BottomTabNav user={user} fetchUser={fetchUser} />}
+          {() => <BottomTabNav user={user} />}
         </Root.Screen>
       </Root.Navigator>
     </NavigationContainer>

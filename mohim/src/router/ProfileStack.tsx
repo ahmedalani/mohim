@@ -11,17 +11,15 @@ const Stack = createStackNavigator();
 
 const ProfileStack = ({
   user,
-  fetchUser,
 }: {
   user: {
     attributes: {username: string; phonenumber: string; email: string};
   } | null;
-  fetchUser: () => void;
 }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        children={() => <ProfileScreen user={user} fetchUser={fetchUser} />}
+        children={() => <ProfileScreen user={user} />}
         name={'ProfileScreen'}
         options={{
           title: 'Your Profile 👤',

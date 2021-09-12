@@ -87,7 +87,7 @@ const App = () => {
     <View style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} />
       <SafeAreaProvider>
-        <Router user={user} fetchUser={fetchUser} />
+        <Router user={user} />
       </SafeAreaProvider>
     </View>
   );

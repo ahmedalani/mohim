@@ -15,10 +15,10 @@ import SignInModal from '../../components/SignInModal';
 
 const ProfileScreen = ({
   user,
-  fetchUser,
 }: {
-  user: {} | null;
-  fetchUser: () => void;
+  user: {
+    attributes: {username: string; phonenumber: string; email: string};
+  } | null;
 }) => {
   // state
   const [showModal, setShowModal] = useState(false);
@@ -95,7 +95,6 @@ const ProfileScreen = ({
             title={'Login'}
           />
           <SignInModal
-            fetchUser={fetchUser}
             modalVisibility={showModal}
             setModalVisiblity={setShowModal}
           />

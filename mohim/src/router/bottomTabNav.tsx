@@ -14,10 +14,10 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabNav = ({
   user,
-  fetchUser,
 }: {
-  user: {} | null;
-  fetchUser: () => void;
+  user: {
+    attributes: {username: string; phonenumber: string; email: string};
+  } | null;
 }) => {
   return (
     <Tab.Navigator
@@ -37,7 +37,7 @@ const BottomTabNav = ({
         }}
       />
       <Tab.Screen
-        children={() => <ProfileStack user={user} fetchUser={fetchUser} />}
+        children={() => <ProfileStack user={user} />}
         name={'profile'}
         options={{
           tabBarIcon: ({color}) => (

@@ -5,14 +5,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 
 const SignInModal = ({
-  fetchUser,
   modalVisibility,
   setModalVisiblity,
 }: {
-  fetchUser: () => void;
   modalVisibility: boolean;
   setModalVisiblity: (arg0: boolean) => void;
 }) => {
+  const haldlePress = async (prov?: string) => {
+    if (prov) {
+      await Auth.federatedSignIn({provider: prov});
+    } else {
+      Auth.federatedSignIn();
+    }
+  };
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisibility}>
       <Pressable
@@ -22,12 +27,7 @@ const SignInModal = ({
           <Text style={styles.modalTitle}>Sign in to continue</Text>
           <View style={{}}>
             <Pressable
-              onPress={async () => {
-                await Auth.federatedSignIn({provider: 'Google'}).then(() =>
-                  fetchUser(),
-                );
-                return;
-              }}
+              onPress={() => haldlePress('Google')}
               style={styles.googlePress}>
               <Image
                 style={styles.googleLogo}
@@ -36,29 +36,19 @@ const SignInModal = ({
               <Text style={styles.googleText}> Sign in with Google</Text>
             </Pressable>
             <Pressable
-              onPress={async () => {
-                await Auth.federatedSignIn({provider: 'Facebook'}).then(() =>
-                  fetchUser(),
-                );
-                return;
-              }}
+              onPress={() => haldlePress('Facebook')}
               style={styles.facebookPress}>
               <AntDesign name="facebook-square" color={'white'} size={25} />
               <Text style={styles.facebookText}> Sign in with Facebook</Text>
             </Pressable>
             <Pressable
-              onPress={async () => {
-                await Auth.federatedSignIn({provider: 'SignInWithApple'}).then(
-                  () => fetchUser(),
-                );
-                return;
-              }}
+              onPress={() => haldlePress('SignInWithApple')}
               style={styles.applePress}>
               <AntDesign name="apple1" color={'white'} size={25} />
               <Text style={styles.appleText}> Sign in with Apple</Text>
             </Pressable>
             <Pressable
-              onPress={() => Auth.federatedSignIn()}
+              onPress={() => haldlePress()}
               style={styles.hostedUIPress}>
               <Image
                 style={styles.mhmLogo}
