@@ -1,39 +1,42 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, Image, Pressable} from 'react-native';
+// components
 import QuantitySelector from '../QuantitySelector';
 // style
 import styles from './styles';
 // icons
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+// Data
+import {DataStore} from '@aws-amplify/datastore';
+import {CartProduct} from '../../models';
 
 interface CartProductItemProps {
   deleteItem: (cartItemId: string) => void;
-  cartItem: {
-    id: string;
-    userSub: string;
-    quantity: number;
-    option?: string;
-    productID: string;
-    product?: {
-      id: string;
-      title: string;
-      description?: string;
-      image: string;
-      images: string[];
-      options?: string[];
-      avgRating: number;
-      ratings?: number;
-      price: number;
-      oldPrice?: number;
-    };
-  };
+  cartItem: CartProduct;
 }
 
 const CartProductItem = (props: CartProductItemProps) => {
   // props
   const {product, ...cartProductDetails} = props.cartItem;
+
+  // quantity update with data store
+  const updateQuantity = async (newQuantity: number) => {
+    // get the original product to manipulate
+    const original: CartProduct | undefined = await DataStore.query(
+      CartProduct,
+      cartProductDetails.id,
+    );
+    if (original) {
+      // once original found update the quantity
+      await DataStore.save(
+        CartProduct.copyOf(original, updated => {
+          updated.quantity = newQuantity;
+        }),
+      );
+    }
+  };
 
   return (
     <View style={styles.root}>
@@ -73,7 +76,7 @@ const CartProductItem = (props: CartProductItemProps) => {
       <View style={styles.quantityContainer}>
         <QuantitySelector
           quantity={cartProductDetails.quantity}
-          setQuantity={() => console.log('setQuantity!')}
+          setQuantity={updateQuantity}
         />
         <Pressable
           onPress={() => props.deleteItem(props.cartItem.id)}
