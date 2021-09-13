@@ -22,10 +22,7 @@ const HomeScreen = ({searchValue}: {searchValue: string}) => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    DataStore.query(Product).then(res => {
-      console.log('res HomeScreen: ', res);
-      setProducts(res);
-    });
+    DataStore.query(Product).then(setProducts);
   }, []);
 
   const SECTIONS = [
@@ -50,7 +47,7 @@ const HomeScreen = ({searchValue}: {searchValue: string}) => {
                 renderItem={({item}) => (
                   <ProductItem item={item} horizon={true} />
                 )}
-                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 horizontal
               />
             )}
@@ -63,6 +60,8 @@ const HomeScreen = ({searchValue}: {searchValue: string}) => {
           return <ProductItem item={item} horizon={false} />;
         }}
         stickySectionHeadersEnabled={false}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </SafeAreaView>
   );
