@@ -1,8 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {Text, ScrollView, ActivityIndicator} from 'react-native';
+import {Text, ScrollView, ActivityIndicator, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
+
+// Data
+import {DataStore} from 'aws-amplify';
+import {Product, CartProduct} from '../../models';
 
 // Styles
 import styles from './styles';
@@ -12,39 +16,20 @@ import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
 import ImageCarousel from '../../components/ImageCarousel';
 
-interface Product {
-  id: string;
-  title: string;
-  description?: string;
-  image: string;
-  images: string[];
-  options?: string[];
-  avgRating: number;
-  ratings?: number;
-  price: number;
-  oldPrice?: number;
-}
-const ProductScreen = () => {
+const ProductScreen = ({
+  user,
+}: {
+  user: {
+    attributes: {
+      username: string;
+      phonenumber: string;
+      email: string;
+      sub: string;
+    };
+  } | null;
+}) => {
   // State
-  const [product, setProduct] = useState<Product | undefined>({
-    id: 'init',
-    title: 'product title',
-    description:
-      'state-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-statestate-state-state-state-state-state-state-state-state-state-state-state-state',
-    image:
-      'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-    images: [
-      'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-      'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-      'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-    ],
-    options: ['one capsule', 'two capsule'],
-    avgRating: 3,
-    ratings: 5,
-    price: 10.95,
-    oldPrice: 20.95,
-  });
-
+  const [product, setProduct] = useState<Product | undefined>(undefined);
   const [selectedOption, setSelectedOption] = useState<string | undefined>(
     undefined,
   );
@@ -57,15 +42,34 @@ const ProductScreen = () => {
   // because the state changes when do anything on the screen which causes rerender, is that bad? 🤔
   console.log('ID in ProductScreen from ProductItem: ', route.params);
 
-  // because selectedOption initialized with undefined
+  // query specific product based on id provided from home screen when pressed on ProductItem
+  useEffect(() => {
+    if (!route.params?.id) {
+      return;
+    }
+    DataStore.query(Product, route.params.id).then(setProduct);
+  }, [route.params?.id]);
+
+  // because selectedOption initialized with null
   useEffect(() => {
     if (product?.options) {
       setSelectedOption(product.options[0]);
     }
   }, [product]);
 
-  const onBuyNow = () => {
-    console.log('buyNow');
+  // post the product as new cartProduct item to database for user and navigate to cartScreen
+  const onBuyNow = async () => {
+    if (!product || !user) {
+      Alert.alert('please sign in to continue');
+      return;
+    }
+    const newCartProduct = new CartProduct({
+      userSub: user.attributes.sub,
+      quantity,
+      option: selectedOption,
+      productID: product.id,
+    });
+    await DataStore.save(newCartProduct);
     navigation.goBack();
     navigation.navigate('shoppingCartStack');
   };

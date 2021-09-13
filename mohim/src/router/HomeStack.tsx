@@ -42,7 +42,18 @@ const HeaderComponent = ({
   );
 };
 
-const HomeStack = () => {
+const HomeStack = ({
+  user,
+}: {
+  user: {
+    attributes: {
+      username: string;
+      phonenumber: string;
+      email: string;
+      sub: string;
+    };
+  } | null;
+}) => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
@@ -58,7 +69,10 @@ const HomeStack = () => {
       <Stack.Screen name={'HomeScreen'} options={{title: 'Home Page'}}>
         {() => <HomeScreen searchValue={searchValue} />}
       </Stack.Screen>
-      <Stack.Screen component={ProductScreen} name={'ProductScreen'} />
+      <Stack.Screen
+        children={() => <ProductScreen user={user} />}
+        name={'ProductScreen'}
+      />
     </Stack.Navigator>
   );
 };

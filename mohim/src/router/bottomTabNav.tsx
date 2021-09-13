@@ -16,7 +16,12 @@ const BottomTabNav = ({
   user,
 }: {
   user: {
-    attributes: {username: string; phonenumber: string; email: string};
+    attributes: {
+      username: string;
+      phonenumber: string;
+      email: string;
+      sub: string;
+    };
   } | null;
 }) => {
   return (
@@ -28,7 +33,7 @@ const BottomTabNav = ({
         headerShown: false,
       }}>
       <Tab.Screen
-        component={HomeStack}
+        children={() => <HomeStack user={user} />}
         name={'HomeStack'}
         options={{
           tabBarIcon: ({color}) => (

@@ -25,7 +25,7 @@ const ProductItem = (props: ProductItemProps) => {
   const navigation = useNavigation();
   const onPress = () => {
     //navigate to product details page
-    navigation.navigate('ProductScreen');
+    navigation.navigate('ProductScreen', {id: item.id});
   };
   return (
     <Pressable style={horizon ? styles.rootH : styles.root} onPress={onPress}>
