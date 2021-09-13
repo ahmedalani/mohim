@@ -8,77 +8,32 @@ import {
   View,
 } from 'react-native';
 
+// Data
+import {DataStore} from 'aws-amplify';
+import {Product} from '../../models';
+
 // componenets
 import ProductItem from '../../components/ProductItem';
 
-// for dummy data
-interface Product {
-  id: string;
-  title: string;
-  description?: string;
-  image: string;
-  images: string[];
-  options?: string[];
-  avgRating: number;
-  ratings?: number;
-  price: number;
-  oldPrice?: number;
-}
 const HomeScreen = ({searchValue}: {searchValue: string}) => {
   console.log('searchValue: ', searchValue);
-  // dummyData
-  const [data, setData] = useState<Product[]>([
-    {
-      id: 'init',
-      title: 'product title',
-      description: 'state-state-state-state-state-state-state-state',
-      image:
-        'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-      images: [
-        'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-        'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-        'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-      ],
-      avgRating: 3,
-      ratings: 5,
-      price: 10.95,
-      oldPrice: 20.95,
-    },
-  ]);
-  const generateData = () => {
-    let result = [];
-    for (let i = 0; i < 5; i++) {
-      const dataObj: Product = {
-        id: i.toString(),
-        title:
-          'product titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct titleproduct title',
-        description: 'adfafsadfadsfasdfasdfasdfasdfadsfaf',
-        image:
-          'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-        images: [
-          'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-          'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-          'https://mhmt3bucket93316-dev.s3.eu-central-1.amazonaws.com/public/productImages/kent-toot2.jpeg',
-        ],
-        avgRating: 3,
-        ratings: 53,
-        price: 10.95,
-        oldPrice: 20.95,
-      };
-      result.push(dataObj);
-    }
-    setData(result);
-  };
+
+  // state
+  const [products, setProducts] = useState<Product[]>([]);
+
   useEffect(() => {
-    generateData();
+    DataStore.query(Product).then(res => {
+      console.log('res HomeScreen: ', res);
+      setProducts(res);
+    });
   }, []);
 
   const SECTIONS = [
-    {title: 'Sponsored', horizontal: true, data},
-    {title: 'Results', horizontal: false, data},
-    {title: 'Related Items', horizontal: true, data},
-    {title: 'more-Results', horizontal: false, data},
-    {title: 'more-Related Items', horizontal: true, data},
+    {title: 'Sponsored', horizontal: true, data: products},
+    {title: 'Results', horizontal: false, data: products},
+    {title: 'Related Items', horizontal: true, data: products},
+    {title: 'more-Results', horizontal: false, data: products},
+    {title: 'more-Related Items', horizontal: true, data: products},
   ];
 
   return (
