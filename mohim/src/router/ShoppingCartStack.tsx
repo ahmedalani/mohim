@@ -3,7 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 // Screens
 import ShoppingCartScreen from '../screens/ShoppingCartScreen';
-import AddressScreen from '../screens/AddressScreen';
+import CheckoutScreen from '../screens/CheckoutScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,10 +19,10 @@ const ShoppingCartStack = () => {
         }}
       />
       <Stack.Screen
-        component={AddressScreen}
-        name={'AddressScreen'}
+        component={CheckoutScreen}
+        name={'CheckoutScreen'}
         options={{
-          title: 'Deliver To',
+          title: 'Review & Place your Order',
           headerStyle: {backgroundColor: '#52aebc'},
           headerBackTitle: '🛒',
         }}

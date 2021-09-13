@@ -108,7 +108,7 @@ const ShoppingCartScreen = () => {
       Alert.alert('Your cart is empty Add items to proceed');
       return;
     }
-    navigation.navigate('AddressScreen');
+    navigation.navigate('CheckoutScreen');
   };
 
   // if cart isn't empty but we doing some fetching or calculating the render this
