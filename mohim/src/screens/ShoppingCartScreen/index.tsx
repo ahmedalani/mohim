@@ -20,6 +20,7 @@ const ShoppingCartScreen = () => {
     // get user data
     const userData = await Auth.currentAuthenticatedUser();
     // to query only my cart items
+    // TODO: query only my NEW added items
     DataStore.query(CartProduct, cp =>
       cp.userSub('eq', userData.attributes.sub),
     ).then(setCartProducts);
@@ -80,6 +81,7 @@ const ShoppingCartScreen = () => {
           );
         }
         // console.log(msg.model, msg.opType, msg.element);
+        // I think: if onType === delete then fetchCartProducts
       }),
     );
 
