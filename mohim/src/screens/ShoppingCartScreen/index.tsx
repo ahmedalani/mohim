@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState, Dispatch, SetStateAction} from 'react';
 import {View, StyleSheet, FlatList, Text, Alert, ActivityIndicator} from 'react-native';
 import Button from '../../components/Button';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -11,7 +11,11 @@ import CartProductItem from '../../components/CartProductItem';
 import {DataStore, Auth} from 'aws-amplify';
 import {Product, CartProduct} from '../../models';
 
-const ShoppingCartScreen = () => {
+const ShoppingCartScreen = ({
+  setCheckoutProducts,
+}: {
+  setCheckoutProducts: Dispatch<SetStateAction<CartProduct[]>>;
+}) => {
   // State
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
   const navigation = useNavigation();
@@ -108,6 +112,7 @@ const ShoppingCartScreen = () => {
       Alert.alert('Your cart is empty Add items to proceed');
       return;
     }
+    setCheckoutProducts(cartProducts);
     navigation.navigate('CheckoutScreen');
   };
 

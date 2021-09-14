@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import {CartProduct} from '../../models';
 import {Picker} from '@react-native-picker/picker';
 // data
 import cities from '../../data/cities';
@@ -19,7 +20,12 @@ import styles from './styles';
 
 // const countries = countryList().getData();
 // console.log(countries[0]);
-const CheckoutScreen = () => {
+const CheckoutScreen = ({
+  checkoutProducts,
+}: {
+  checkoutProducts: CartProduct[];
+}) => {
+  console.log('checkoutProducts: from checkoutScreen: ', checkoutProducts);
   // State
   return (
     <KeyboardAvoidingView
