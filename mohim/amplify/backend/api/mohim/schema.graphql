@@ -1,4 +1,7 @@
-type Product @model @auth(rules: [{allow: public}]) {
+type Product
+  @model
+  @auth(rules: [{allow: public}])
+  @key(name: "byOrder", fields: ["orderID"]) {
   id: ID!
   title: String!
   description: String
@@ -11,6 +14,8 @@ type Product @model @auth(rules: [{allow: public}]) {
 
   price: Float!
   oldPrice: Float
+
+  orders: [OrderProduct] @connection(keyName: "byProduct", fields: ["id"])
 }
 
 type CartProduct @model @auth(rules: [{allow: public}]) {
@@ -23,30 +28,6 @@ type CartProduct @model @auth(rules: [{allow: public}]) {
   product: Product @connection(fields: ["productID"])
 }
 
-type OrderProduct @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  quantity: Int!
-  option: String
-
-  productID: ID!
-  product: Product @connection(fields: ["productID"])
-
-  orderID: ID!
-  order: Order @connection(fields: ["orderID"])
-}
-
-type Order @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  userSub: String!
-
-  fullName: String!
-  phoneNumber: String!
-  secondaryPhoneNumber: String
-  city: String
-  notes: String
-  address: String
-}
-
 type Address @model @auth(rules: [{allow: public}]) {
   id: ID!
   userSub: String!
@@ -54,8 +35,30 @@ type Address @model @auth(rules: [{allow: public}]) {
   lable: String!
   addressText: String!
   city: String!
+}
 
-  # connection to Order
+# many-to-many connection
+type OrderProduct
+  @model(queries: null)
+  @key(name: "byOrder", fields: ["orderID", "productID"])
+  @key(name: "byProduct", fields: ["productID", "orderID"]) {
+  id: ID!
+  orderID: ID!
+  productID: ID!
+  order: Order! @connection(fields: ["orderID"])
+  product: Product! @connection(fields: ["productID"])
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userSub: String!
+
+  products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
+
+  addressID: ID!
+  address: Address @connection(fields: ["addressID"])
+
+  deliveryNotes: String
 }
 
 # type Blog @model {
