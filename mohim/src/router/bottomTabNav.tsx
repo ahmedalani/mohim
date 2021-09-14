@@ -51,7 +51,7 @@ const BottomTabNav = ({
         }}
       />
       <Tab.Screen
-        component={ShoppingCartStack}
+        children={() => <ShoppingCartStack user={user} />}
         name={'shoppingCartStack'}
         options={{
           tabBarIcon: ({color}) => (

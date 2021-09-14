@@ -10,7 +10,13 @@ import {CartProduct} from '../models';
 
 const Stack = createStackNavigator();
 
-const ShoppingCartStack = () => {
+const ShoppingCartStack = ({
+  user,
+}: {
+  user: {
+    attributes: {sub: string};
+  } | null;
+}) => {
   const [checkoutProducts, setCheckoutProducts] = useState<CartProduct[]>([]);
   return (
     <Stack.Navigator>
@@ -25,7 +31,9 @@ const ShoppingCartStack = () => {
         }}
       />
       <Stack.Screen
-        children={() => <CheckoutScreen checkoutProducts={checkoutProducts} />}
+        children={() => (
+          <CheckoutScreen checkoutProducts={checkoutProducts} user={user} />
+        )}
         name={'CheckoutScreen'}
         options={{
           title: 'Review & Place your Order',

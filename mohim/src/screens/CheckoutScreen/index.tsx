@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
-import {CartProduct} from '../../models';
+import {Address, CartProduct} from '../../models';
 import {Picker} from '@react-native-picker/picker';
 // data
-import cities from '../../data/cities';
+import {DataStore} from 'aws-amplify';
+
 // componenets
 import Button from '../../components/Button';
 // style
@@ -24,9 +25,35 @@ import styles from './styles';
 // console.log(countries[0]);
 const CheckoutScreen = ({
   checkoutProducts,
+  user,
 }: {
   checkoutProducts: CartProduct[];
+  user: {attributes: {sub: string}} | null;
 }) => {
+  // picker state
+  const [checkoutAddress, setCheckoutAddress] = useState<Address | undefined>(
+    undefined,
+  );
+  // state list of user addresses
+  const [addressList, setAddressList] = useState<Address[]>([]);
+
+  // to fetch user addresses from datastore
+  useEffect(() => {
+    const fetchUserAddresses = async () => {
+      if (!user) {
+        Alert.alert('no user found');
+        return;
+      }
+      // query the datastore for user addresses
+      const userAddressList = await DataStore.query(Address, ad =>
+        ad.userSub('eq', user.attributes.sub),
+      );
+      // set addressList state
+      setAddressList(userAddressList);
+    };
+    fetchUserAddresses();
+  }, [user]);
+
   const route: RouteProp<{params: {totalPrice: number}}, 'params'> = useRoute();
   let orderTotal = route.params?.totalPrice + 4.99;
 
@@ -38,8 +65,12 @@ const CheckoutScreen = ({
         {/* review order: show a brief discription of items and quantity total price + shipping? */}
         <View style={styles.orderTotal}>
           <View style={styles.orderTotalRow}>
-            <Text style={styles.orderTotaltext}>{checkoutProducts.length} Items:</Text>
-            <Text style={styles.orderTotaltext}>${route.params?.totalPrice.toFixed(2)}</Text>
+            <Text style={styles.orderTotaltext}>
+              {checkoutProducts.length} Items:
+            </Text>
+            <Text style={styles.orderTotaltext}>
+              ${route.params?.totalPrice.toFixed(2)}
+            </Text>
           </View>
           <View style={styles.orderTotalRow}>
             <Text style={styles.orderTotaltext}>Shipping & handling: </Text>
@@ -51,7 +82,19 @@ const CheckoutScreen = ({
           </View>
         </View>
         {/* pick a delivery address from the user datastore address list */}
-
+        <View>
+          <Picker
+            selectedValue={checkoutAddress}
+            onValueChange={setCheckoutAddress}>
+            {addressList.map((address, i) => (
+              <Picker.Item
+                key={`addressItem-${address.lable}-${i}`}
+                label={`${address.city}: ${address.addressText}`}
+                value={address.lable}
+              />
+            ))}
+          </Picker>
+        </View>
         {/* Button checkout order : place order to datastor after confirmation */}
 
         {/* return to homeScreen */}
