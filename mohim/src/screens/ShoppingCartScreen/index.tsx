@@ -1,6 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useState, Dispatch, SetStateAction} from 'react';
-import {View, StyleSheet, FlatList, Text, Alert, ActivityIndicator} from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import Button from '../../components/Button';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
@@ -36,7 +49,7 @@ const ShoppingCartScreen = ({
   // fetch data on screen focus: using it so when we navigate to this screen with new product we fetch for it to see it
   useFocusEffect(
     useCallback(() => {
-      console.log('fetching data on focus!!');
+      // console.log('fetching data on focus!!');
       fetchCartProdutcs();
     }, []),
   );
@@ -112,8 +125,8 @@ const ShoppingCartScreen = ({
       Alert.alert('Your cart is empty Add items to proceed');
       return;
     }
-    setCheckoutProducts(cartProducts);
-    navigation.navigate('CheckoutScreen');
+    setCheckoutProducts(cartProducts); // parent state
+    navigation.navigate('CheckoutScreen', {totalPrice});
   };
 
   // if cart isn't empty but we doing some fetching or calculating the render this

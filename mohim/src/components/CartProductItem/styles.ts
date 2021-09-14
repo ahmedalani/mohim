@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'normal',
     textDecorationLine: 'line-through',
+    color: '#f15d3c',
   },
   quantityContainer: {
     flexDirection: 'row',

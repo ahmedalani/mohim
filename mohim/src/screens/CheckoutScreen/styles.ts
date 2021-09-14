@@ -4,23 +4,33 @@ const styles = StyleSheet.create({
   root: {
     padding: 10,
   },
-  row: {
-    marginVertical: 5,
-  },
-  label: {
-    fontWeight: 'bold',
-  },
-  input: {
+  orderTotal: {
     backgroundColor: 'white',
-    padding: 5,
-    marginVertical: 5,
-    height: 40,
     borderWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: 'gray',
     borderRadius: 5,
+    padding: 5,
+    flexDirection: 'column',
   },
-  errorLabel: {
-    color: 'red',
+  orderTotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+  },
+  orderTotaltext: {
+    fontSize: 16,
+    fontFamily: 'helvetica',
+  },
+  orderTotalT: {
+    fontFamily: 'helvetica',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  orderTotalN: {
+    fontFamily: 'helvetica',
+    color: '#f15d3c',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 

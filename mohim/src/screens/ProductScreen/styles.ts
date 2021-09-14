@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'normal',
     textDecorationLine: 'line-through',
-    color: 'red',
+    color: '#f15d3c',
   },
   description: {
     marginVertical: 10,

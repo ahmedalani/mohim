@@ -12,7 +12,6 @@ const Stack = createStackNavigator();
 
 const ShoppingCartStack = () => {
   const [checkoutProducts, setCheckoutProducts] = useState<CartProduct[]>([]);
-  // console.log('from SCStack: ', checkoutProducts);
   return (
     <Stack.Navigator>
       <Stack.Screen
