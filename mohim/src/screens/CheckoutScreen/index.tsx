@@ -54,8 +54,13 @@ const CheckoutScreen = ({
     fetchUserAddresses();
   }, [user]);
 
+  const placeOrder = async () => {
+    Alert.alert('Thanks for using MHM ❤️');
+    console.log('place order');
+  };
+
   const route: RouteProp<{params: {totalPrice: number}}, 'params'> = useRoute();
-  let orderTotal = route.params?.totalPrice + 4.99;
+  const orderTotal = route.params?.totalPrice + 4.99;
 
   return (
     <KeyboardAvoidingView
@@ -95,9 +100,8 @@ const CheckoutScreen = ({
             ))}
           </Picker>
         </View>
-        {/* Button checkout order : place order to datastor after confirmation */}
-
-        {/* return to homeScreen */}
+        {/* Button checkout order : place order to datastor then navigate to homescreen */}
+        <Button text={'Place Order'} onPress={placeOrder} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
