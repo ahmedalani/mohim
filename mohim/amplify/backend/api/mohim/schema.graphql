@@ -6,7 +6,7 @@ type Vendor @modal @auth(rules: [{allow: public}]) {
   
 }
 
-type Category @modal @auth(rules: [{allow: public}]) {
+type Category @modal @auth(rules: [{allow: public, operations: [read]}]) {
   id: ID!
   title: String!
   description: String!
@@ -15,7 +15,7 @@ type Category @modal @auth(rules: [{allow: public}]) {
   products: [Product] @connection(keyName: "byCategory", fields: ["id"])
 }
 
-type Product @model @auth(rules: [{allow: public}]) @key(name: "byCategory", fields: ["categoryID"]) {
+type Product @model @auth(rules: [{allow: public, operations: [read]}]) @key(name: "byCategory", fields: ["categoryID"]) {
   id: ID!
 
   title: String!
@@ -38,7 +38,15 @@ type Product @model @auth(rules: [{allow: public}]) @key(name: "byCategory", fie
   comments: [Comment] @connection(keyName: "byProduct", fields: ["id"])
 }
 
-type Comment @model @auth(rules: [{allow: public}]) @key(name: "byProduct", fields: ["productID"]) {
+type Comment @model
+  @auth(
+    rules: [
+      {allow: owner, operations: [create, delete, update]},
+      {allow: private, operations: [read]},
+      {allow: public, operations: [read]}
+    ]
+  )
+  @key(name: "byProduct", fields: ["productID"]) {
   id: ID!
   userSub: String!
 
@@ -49,7 +57,7 @@ type Comment @model @auth(rules: [{allow: public}]) @key(name: "byProduct", fiel
   product: Product @connection(fields: ["productID"])
 }
 
-type Address @model @auth(rules: [{allow: public}]) {
+type Address @model @auth(rules: [{allow: private}]) {
   id: ID!
   userSub: String!
 
@@ -58,7 +66,7 @@ type Address @model @auth(rules: [{allow: public}]) {
   city: String!
 }
 
-type CartProduct @model @auth(rules: [{allow: public}]) @key(name: "byCart", fields: ["cartID"]) {
+type CartProduct @model @auth(rules: [{allow: private}]) @key(name: "byCart", fields: ["cartID"]) {
   id: ID!
 
   selectedQuantity: Int!
@@ -73,14 +81,14 @@ type CartProduct @model @auth(rules: [{allow: public}]) @key(name: "byCart", fie
   cart: Cart @connection(fields: ["cartID"])
 }
 
-type Cart @model @auth({rules: [{allow: public}]}) {
+type Cart @model @auth({rules: [{allow: private}]}) {
   id: ID!
   userSub: String!
   #has many CartProduct
   cartProducts: [CartProduct] @connection(keyName: "byCart", fields: ["id"])
 }
 
-type Order @model @auth(rules: [{allow: public}]) {
+type Order @model @auth(rules: [{allow: private}]) {
   id: ID!
   userSub: String!
 
