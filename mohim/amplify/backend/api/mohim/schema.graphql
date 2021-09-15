@@ -15,7 +15,9 @@ type Category @modal @auth(rules: [{allow: public, operations: [read]}]) {
   products: [Product] @connection(keyName: "byCategory", fields: ["id"])
 }
 
-type Product @model @auth(rules: [{allow: public, operations: [read]}]) @key(name: "byCategory", fields: ["categoryID"]) {
+type Product @model
+  @auth(rules: [{allow: public, operations: [read]}])
+  @key(name: "byCategory", fields: ["categoryID"]) {
   id: ID!
 
   title: String!
