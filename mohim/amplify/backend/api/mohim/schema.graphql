@@ -1,12 +1,11 @@
 # has many Category
 # has many Product
-type Vendor @modal @auth(rules: [{allow: public}]) {
+type Vendor @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
-  
 }
 
-type Category @modal @auth(rules: [{allow: public, operations: [read]}]) {
+type Category @model @auth(rules: [{allow: public, operations: [read]}]) {
   id: ID!
   title: String!
   description: String!
@@ -15,7 +14,8 @@ type Category @modal @auth(rules: [{allow: public, operations: [read]}]) {
   products: [Product] @connection(keyName: "byCategory", fields: ["id"])
 }
 
-type Product @model
+type Product
+  @model
   @auth(rules: [{allow: public, operations: [read]}])
   @key(name: "byCategory", fields: ["categoryID"]) {
   id: ID!
@@ -40,11 +40,12 @@ type Product @model
   comments: [Comment] @connection(keyName: "byProduct", fields: ["id"])
 }
 
-type Comment @model
+type Comment
+  @model
   @auth(
     rules: [
-      {allow: owner, operations: [create, delete, update]},
-      {allow: private, operations: [read]},
+      {allow: owner, operations: [create, delete, update]}
+      {allow: private, operations: [read]}
       {allow: public, operations: [read]}
     ]
   )
@@ -68,7 +69,10 @@ type Address @model @auth(rules: [{allow: private}]) {
   city: String!
 }
 
-type CartProduct @model @auth(rules: [{allow: private}]) @key(name: "byCart", fields: ["cartID"]) {
+type CartProduct
+  @model
+  @auth(rules: [{allow: private}])
+  @key(name: "byCart", fields: ["cartID"]) {
   id: ID!
 
   selectedQuantity: Int!
@@ -83,7 +87,7 @@ type CartProduct @model @auth(rules: [{allow: private}]) @key(name: "byCart", fi
   cart: Cart @connection(fields: ["cartID"])
 }
 
-type Cart @model @auth({rules: [{allow: private}]}) {
+type Cart @model @auth(rules: [{allow: private}]) {
   id: ID!
   userSub: String!
   #has many CartProduct
@@ -117,7 +121,6 @@ type Order @model @auth(rules: [{allow: private}]) {
 #   order: Order! @connection(fields: ["orderID"])
 #   product: Product! @connection(fields: ["productID"])
 # }
-
 
 # type Blog @model {
 #   id: ID!
