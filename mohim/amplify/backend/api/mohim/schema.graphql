@@ -1,29 +1,50 @@
-type Product
-  @model
-  @auth(rules: [{allow: public}])
-  @key(name: "byOrder", fields: ["orderID"]) {
+# has many Category
+# has many Product
+type Vendor @modal @auth(rules: [{allow: public}]) {
   id: ID!
+  name: String!
+  
+}
+
+type Category @modal @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  description: String!
+  image: String!
+  # has many Product
+  products: [Product] @connection(keyName: "byCategory", fields: ["id"])
+}
+
+type Product @model @auth(rules: [{allow: public}]) @key(name: "byCategory", fields: ["categoryID"]) {
+  id: ID!
+
   title: String!
   description: String
   image: String!
-  images: [String!]!
-  options: [String!]
+  images: [String]!
+  sizes: [String]
+  colors: [String]
+  weights: [Float]
 
   avgRating: Float!
   ratings: Int
 
   price: Float!
   oldPrice: Float
-
-  orders: [OrderProduct] @connection(keyName: "byProduct", fields: ["id"])
+  # belongs to Category
+  categoryID: ID!
+  category: Category @connection(fields: ["categoryID"])
+  # has many Comment
+  comments: [Comment] @connection(keyName: "byProduct", fields: ["id"])
 }
 
-type CartProduct @model @auth(rules: [{allow: public}]) {
+type Comment @model @auth(rules: [{allow: public}]) @key(name: "byProduct", fields: ["productID"]) {
   id: ID!
   userSub: String!
-  quantity: Int!
-  option: String
 
+  title: String!
+  conetent: String!
+  # belongs to a Product
   productID: ID!
   product: Product @connection(fields: ["productID"])
 }
@@ -37,29 +58,56 @@ type Address @model @auth(rules: [{allow: public}]) {
   city: String!
 }
 
-# many-to-many connection
-type OrderProduct
-  @model(queries: null)
-  @key(name: "byOrder", fields: ["orderID", "productID"])
-  @key(name: "byProduct", fields: ["productID", "orderID"]) {
+type CartProduct @model @auth(rules: [{allow: public}]) @key(name: "byCart", fields: ["cartID"]) {
   id: ID!
-  orderID: ID!
+
+  selectedQuantity: Int!
+  selectedSize: String
+  selectedColor: String
+  selectedWeight: Float
+  # has a Product
   productID: ID!
-  order: Order! @connection(fields: ["orderID"])
-  product: Product! @connection(fields: ["productID"])
+  product: Product @connection(fields: ["productID"])
+  # belongs to a Cart
+  cartID: ID!
+  cart: Cart @connection(fields: ["cartID"])
+}
+
+type Cart @model @auth({rules: [{allow: public}]}) {
+  id: ID!
+  userSub: String!
+  #has many CartProduct
+  cartProducts: [CartProduct] @connection(keyName: "byCart", fields: ["id"])
 }
 
 type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
   userSub: String!
 
-  products: [OrderProduct] @connection(keyName: "byOrder", fields: ["id"])
-
+  deliveryNotes: String
+  totalPrice: Float!
+  paymentMethod: String! # for now only "chash on delivery"
+  # has a Cart
+  cartID: ID!
+  cart: Cart @connection(fields: ["cartID"])
+  # has an Address
   addressID: ID!
   address: Address @connection(fields: ["addressID"])
-
-  deliveryNotes: String
 }
+
+# not needed for now
+# many-to-many connection
+# type OrderProduct
+#   @model(queries: null)
+#   @key(name: "byOrder", fields: ["orderID", "productID"])
+#   @key(name: "byProduct", fields: ["productID", "orderID"]) {
+#   id: ID!
+#   orderID: ID!
+#   productID: ID!
+#   order: Order! @connection(fields: ["orderID"])
+#   product: Product! @connection(fields: ["productID"])
+# }
+
 
 # type Blog @model {
 #   id: ID!
