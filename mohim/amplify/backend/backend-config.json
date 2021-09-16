@@ -23,5 +23,30 @@
         ]
       }
     }
+  },
+  "api": {
+    "mohimGQL": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authmohimb345135b"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 300,
+                "description": "mohimGQLApiKey"
+              }
+            }
+          ]
+        }
+      }
+    }
   }
 }
