@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mohim261c094a_identitypool_261c094a",
+    "identityPoolName": "mohimb345135b_identitypool_b345135b",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mohim261c094a",
-    "userPoolName": "mohim261c094a_userpool_261c094a",
+    "resourceNameTruncated": "mohimb345135b",
+    "userPoolName": "mohimb345135b_userpool_b345135b",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -21,6 +21,7 @@
         "email"
     ],
     "aliasAttributes": [
+        "email",
         "preferred_username"
     ],
     "userpoolClientGenerateSecret": false,
@@ -31,10 +32,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "mohim2261c094a_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "mohimbb345135b_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "261c094a",
-    "resourceName": "mohim261c094a",
+    "sharedId": "b345135b",
+    "resourceName": "mohimb345135b",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -51,12 +52,13 @@
     "useDefault": "defaultSocial",
     "hostedUI": true,
     "triggers": "{}",
-    "hostedUIDomainName": "mohim261c094a-261c094a",
+    "hostedUIDomainName": "mohim4domain",
     "authProvidersUserPool": [
         "Facebook",
-        "Google"
+        "Google",
+        "SignInWithApple"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}},{\"ProviderName\":\"SignInWithApple\",\"authorize_scopes\":\"email\",\"AttributeMapping\":{\"email\":\"email\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"myapp://\"],\"LogoutURLs\":[\"myapp://\"]}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",

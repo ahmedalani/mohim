@@ -1,12 +1,13 @@
 {
   "auth": {
-    "mohim261c094a": {
+    "mohimb345135b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "loginMechanism": [
+          "EMAIL",
           "PREFERRED_USERNAME"
         ],
         "signupAttributes": [
@@ -21,30 +22,6 @@
           "SMS"
         ]
       }
-    }
-  },
-  "api": {
-    "mohim": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 300,
-              "description": "mohim api key"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
-    }
-  },
-  "storage": {
-    "mohimStorage": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation"
     }
   }
 }
