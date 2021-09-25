@@ -1,139 +1,75 @@
-# has many Category
-# has many Product
-type Vendor @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String!
-}
-
-type Category @model @auth(rules: [{allow: public, operations: [read]}]) {
+type Category @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   title: String!
   description: String!
   image: String!
-  # has many Product
   products: [Product] @connection(keyName: "byCategory", fields: ["id"])
 }
 
-type Product @model @auth(rules: [{allow: public, operations: [read]}]) @key(name: "byCategory", fields: ["categoryID"]) {
+type Product @model @key(name: "byCategory", fields: ["categoryID"]) @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
-
   title: String!
   description: String
   image: String!
-  images: [String]!
-  sizes: [String]
-  colors: [String]
-  weights: [Float]
-
+  images: [String!]!
+  sizes: [String]!
+  colors: [String]!
+  weights: [Float]!
+  model: [String]!
   avgRating: Float!
   ratings: Int
-
   price: Float!
   oldPrice: Float
-  # belongs to Category
-  categoryID: ID!
-  category: Category @connection(fields: ["categoryID"])
-  # has many Comment
+  categoryID: ID
+  category: Category @connection
   comments: [Comment] @connection(keyName: "byProduct", fields: ["id"])
 }
 
-type Comment @model
-  @auth(
-    rules: [
-      {allow: owner, operations: [create, delete, update]}
-      {allow: private, operations: [read]}
-      {allow: public, operations: [read]}
-    ]
-  )
-  @key(name: "byProduct", fields: ["productID"]) {
+type Comment @model @key(name: "byProduct", fields: ["productID"]) @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
-
   title: String!
   conetent: String!
-  # belongs to a Product
-  productID: ID!
-  product: Product @connection(fields: ["productID"])
+  productID: ID
+  product: Product @connection
 }
 
-type Address @model @auth(rules: [{allow: private}]) {
+type Address @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
-
   lable: String!
   addressText: String!
   city: String!
 }
 
-type CartProduct @model
-  @auth(rules: [{allow: private}])
-  @key(name: "byCart", fields: ["cartID"]) {
+type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
-
+  userSub: String!
   selectedQuantity: Int!
   selectedSize: String
   selectedColor: String
   selectedWeight: Float
-  # has a Product
   productID: ID!
-  product: Product @connection(fields: ["productID"])
-  # belongs to a Cart
-  cartID: ID!
-  cart: Cart @connection(fields: ["cartID"])
+  product: Product @connection
+  cartID: ID
+  cart: Cart @connection
 }
 
-type Cart @model @auth(rules: [{allow: private}]) {
+type Cart @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
-  #has many CartProduct
   cartProducts: [CartProduct] @connection(keyName: "byCart", fields: ["id"])
 }
 
-type Order @model @auth(rules: [{allow: private}]) {
+type Order @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
-
   deliveryNotes: String
   totalPrice: Float!
-  paymentMethod: String! # for now only "chash on delivery"
-  # has a Cart
+  paymentMethod: String!
   cartID: ID!
-  cart: Cart @connection(fields: ["cartID"])
-  # has an Address
+  cart: Cart @connection
   addressID: ID!
-  address: Address @connection(fields: ["addressID"])
+  address: Address @connection
 }
-
-# not needed for now
-# many-to-many connection
-# type OrderProduct
-#   @model(queries: null)
-#   @key(name: "byOrder", fields: ["orderID", "productID"])
-#   @key(name: "byProduct", fields: ["productID", "orderID"]) {
-#   id: ID!
-#   orderID: ID!
-#   productID: ID!
-#   order: Order! @connection(fields: ["orderID"])
-#   product: Product! @connection(fields: ["productID"])
-# }
-
-# type Blog @model {
-#   id: ID!
-#   name: String!
-#   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
-# }
-
-# type Post @model @key(name: "byBlog", fields: ["blogID"]) {
-#   id: ID!
-#   title: String!
-#   blogID: ID!
-#   blog: Blog @connection(fields: ["blogID"])
-#   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-# }
-
-# type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
-#   id: ID!
-#   postID: ID!
-#   post: Post @connection(fields: ["postID"])
-#   content: String!
-# }
+ 

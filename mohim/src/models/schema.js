@@ -1,64 +1,5 @@
 export const schema = {
     "models": {
-        "Vendor": {
-            "name": "Vendor",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Vendors",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "Category": {
             "name": "Category",
             "fields": {
@@ -101,7 +42,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "category"
+                        "associatedWith": "categoryID"
                     }
                 },
                 "createdAt": {
@@ -135,6 +76,18 @@ export const schema = {
                             {
                                 "allow": "public",
                                 "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
                                     "read"
                                 ]
                             }
@@ -178,7 +131,7 @@ export const schema = {
                     "name": "images",
                     "isArray": true,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": false
                 },
@@ -188,7 +141,7 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "colors": {
                     "name": "colors",
@@ -196,7 +149,7 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "weights": {
                     "name": "weights",
@@ -204,7 +157,15 @@ export const schema = {
                     "type": "Float",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
+                },
+                "model": {
+                    "name": "model",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": false
                 },
                 "avgRating": {
                     "name": "avgRating",
@@ -234,6 +195,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "categoryID": {
+                    "name": "categoryID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "category": {
                     "name": "category",
                     "isArray": false,
@@ -244,7 +212,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "categoryID"
+                        "targetName": "productCategoryId"
                     }
                 },
                 "comments": {
@@ -258,7 +226,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "product"
+                        "associatedWith": "productID"
                     }
                 },
                 "createdAt": {
@@ -301,6 +269,18 @@ export const schema = {
                             {
                                 "allow": "public",
                                 "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
                                     "read"
                                 ]
                             }
@@ -340,6 +320,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "productID": {
+                    "name": "productID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "product": {
                     "name": "product",
                     "isArray": false,
@@ -350,7 +337,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "productID"
+                        "targetName": "commentProductId"
                     }
                 },
                 "createdAt": {
@@ -391,25 +378,20 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
+                                "allow": "public",
                                 "operations": [
                                     "create",
+                                    "update",
                                     "delete",
-                                    "update"
-                                ],
-                                "identityClaim": "cognito:username"
-                            },
-                            {
-                                "allow": "private",
-                                "operations": [
                                     "read"
                                 ]
                             },
                             {
-                                "allow": "public",
+                                "allow": "private",
                                 "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
                                     "read"
                                 ]
                             }
@@ -485,6 +467,15 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
                                 "allow": "private",
                                 "operations": [
                                     "create",
@@ -505,6 +496,13 @@ export const schema = {
                     "name": "id",
                     "isArray": false,
                     "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "userSub": {
+                    "name": "userSub",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -536,6 +534,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "productID": {
+                    "name": "productID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "product": {
                     "name": "product",
                     "isArray": false,
@@ -546,8 +551,15 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "productID"
+                        "targetName": "cartProductProductId"
                     }
+                },
+                "cartID": {
+                    "name": "cartID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "cart": {
                     "name": "cart",
@@ -559,7 +571,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "cartID"
+                        "targetName": "cartProductCartId"
                     }
                 },
                 "createdAt": {
@@ -599,6 +611,15 @@ export const schema = {
                     "type": "auth",
                     "properties": {
                         "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
                             {
                                 "allow": "private",
                                 "operations": [
@@ -641,7 +662,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "cart"
+                        "associatedWith": "cartID"
                     }
                 },
                 "createdAt": {
@@ -672,6 +693,15 @@ export const schema = {
                     "type": "auth",
                     "properties": {
                         "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
                             {
                                 "allow": "private",
                                 "operations": [
@@ -724,6 +754,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "cartID": {
+                    "name": "cartID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "cart": {
                     "name": "cart",
                     "isArray": false,
@@ -734,7 +771,7 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "cartID"
+                        "targetName": "orderCartId"
                     }
                 },
                 "addressID": {
@@ -753,9 +790,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "addressID"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "orderAddressId"
                     }
                 },
                 "createdAt": {
@@ -787,6 +823,15 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
                                 "allow": "private",
                                 "operations": [
                                     "create",
@@ -803,5 +848,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "e03e4c9b189b83fb8f9a84e78ba16636"
+    "version": "884b6efaa2d54906d5b2f65133a477ef"
 };

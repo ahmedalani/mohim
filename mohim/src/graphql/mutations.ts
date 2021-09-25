@@ -2,6 +2,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createVendor = /* GraphQL */ `
+  mutation CreateVendor(
+    $input: CreateVendorInput!
+    $condition: ModelVendorConditionInput
+  ) {
+    createVendor(input: $input, condition: $condition) {
+      id
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateVendor = /* GraphQL */ `
+  mutation UpdateVendor(
+    $input: UpdateVendorInput!
+    $condition: ModelVendorConditionInput
+  ) {
+    updateVendor(input: $input, condition: $condition) {
+      id
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteVendor = /* GraphQL */ `
+  mutation DeleteVendor(
+    $input: DeleteVendorInput!
+    $condition: ModelVendorConditionInput
+  ) {
+    deleteVendor(input: $input, condition: $condition) {
+      id
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createCategory = /* GraphQL */ `
   mutation CreateCategory(
     $input: CreateCategoryInput!
@@ -27,6 +75,7 @@ export const createCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -69,6 +118,7 @@ export const updateCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -111,6 +161,7 @@ export const deleteCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -142,6 +193,7 @@ export const createProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -179,7 +231,6 @@ export const createProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -201,6 +252,7 @@ export const updateProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -238,7 +290,6 @@ export const updateProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -260,6 +311,7 @@ export const deleteProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -297,7 +349,6 @@ export const deleteProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -330,6 +381,7 @@ export const createComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -356,7 +408,6 @@ export const createComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
     }
   }
 `;
@@ -385,6 +436,7 @@ export const updateComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -411,7 +463,6 @@ export const updateComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
     }
   }
 `;
@@ -440,6 +491,7 @@ export const deleteComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -466,7 +518,6 @@ export const deleteComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
     }
   }
 `;
@@ -534,25 +585,13 @@ export const createCartProduct = /* GraphQL */ `
   ) {
     createCartProduct(input: $input, condition: $condition) {
       id
+      userSub
       selectedQuantity
       selectedSize
       selectedColor
       selectedWeight
       productID
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -567,6 +606,7 @@ export const createCartProduct = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -589,6 +629,19 @@ export const createCartProduct = /* GraphQL */ `
           updatedAt
         }
         comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
           nextToken
           startedAt
         }
@@ -603,25 +656,13 @@ export const updateCartProduct = /* GraphQL */ `
   ) {
     updateCartProduct(input: $input, condition: $condition) {
       id
+      userSub
       selectedQuantity
       selectedSize
       selectedColor
       selectedWeight
       productID
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -636,6 +677,7 @@ export const updateCartProduct = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -658,6 +700,19 @@ export const updateCartProduct = /* GraphQL */ `
           updatedAt
         }
         comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
           nextToken
           startedAt
         }
@@ -672,25 +727,13 @@ export const deleteCartProduct = /* GraphQL */ `
   ) {
     deleteCartProduct(input: $input, condition: $condition) {
       id
+      userSub
       selectedQuantity
       selectedSize
       selectedColor
       selectedWeight
       productID
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       _version
       _deleted
       _lastChangedAt
@@ -705,6 +748,7 @@ export const deleteCartProduct = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -727,6 +771,19 @@ export const deleteCartProduct = /* GraphQL */ `
           updatedAt
         }
         comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
           nextToken
           startedAt
         }
@@ -742,9 +799,15 @@ export const createCart = /* GraphQL */ `
     createCart(input: $input, condition: $condition) {
       id
       userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       cartProducts {
         items {
           id
+          userSub
           selectedQuantity
           selectedSize
           selectedColor
@@ -760,11 +823,6 @@ export const createCart = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -776,9 +834,15 @@ export const updateCart = /* GraphQL */ `
     updateCart(input: $input, condition: $condition) {
       id
       userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       cartProducts {
         items {
           id
+          userSub
           selectedQuantity
           selectedSize
           selectedColor
@@ -794,11 +858,6 @@ export const updateCart = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -810,9 +869,15 @@ export const deleteCart = /* GraphQL */ `
     deleteCart(input: $input, condition: $condition) {
       id
       userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       cartProducts {
         items {
           id
+          userSub
           selectedQuantity
           selectedSize
           selectedColor
@@ -828,11 +893,6 @@ export const deleteCart = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -848,20 +908,12 @@ export const createOrder = /* GraphQL */ `
       totalPrice
       paymentMethod
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       address {
         id
         userSub
@@ -874,11 +926,19 @@ export const createOrder = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
     }
   }
 `;
@@ -894,20 +954,12 @@ export const updateOrder = /* GraphQL */ `
       totalPrice
       paymentMethod
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       address {
         id
         userSub
@@ -920,11 +972,19 @@ export const updateOrder = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
     }
   }
 `;
@@ -940,20 +1000,12 @@ export const deleteOrder = /* GraphQL */ `
       totalPrice
       paymentMethod
       cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
       addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       address {
         id
         userSub
@@ -966,59 +1018,19 @@ export const deleteOrder = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createVendor = /* GraphQL */ `
-  mutation CreateVendor(
-    $input: CreateVendorInput!
-    $condition: ModelVendorConditionInput
-  ) {
-    createVendor(input: $input, condition: $condition) {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateVendor = /* GraphQL */ `
-  mutation UpdateVendor(
-    $input: UpdateVendorInput!
-    $condition: ModelVendorConditionInput
-  ) {
-    updateVendor(input: $input, condition: $condition) {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteVendor = /* GraphQL */ `
-  mutation DeleteVendor(
-    $input: DeleteVendorInput!
-    $condition: ModelVendorConditionInput
-  ) {
-    deleteVendor(input: $input, condition: $condition) {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
     }
   }
 `;

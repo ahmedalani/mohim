@@ -4,10 +4,6 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-type VendorMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 type CategoryMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -36,15 +32,6 @@ type OrderMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-export declare class Vendor {
-  readonly id: string;
-  readonly name: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<Vendor, VendorMetaData>);
-  static copyOf(source: Vendor, mutator: (draft: MutableModel<Vendor, VendorMetaData>) => MutableModel<Vendor, VendorMetaData> | void): Vendor;
-}
-
 export declare class Category {
   readonly id: string;
   readonly title: string;
@@ -62,14 +49,16 @@ export declare class Product {
   readonly title: string;
   readonly description?: string;
   readonly image: string;
-  readonly images: (string | null)[];
-  readonly sizes?: (string | null)[];
-  readonly colors?: (string | null)[];
-  readonly weights?: (number | null)[];
+  readonly images: string[];
+  readonly sizes: (string | null)[];
+  readonly colors: (string | null)[];
+  readonly weights: (number | null)[];
+  readonly model: (string | null)[];
   readonly avgRating: number;
   readonly ratings?: number;
   readonly price: number;
   readonly oldPrice?: number;
+  readonly categoryID?: string;
   readonly category?: Category;
   readonly comments?: (Comment | null)[];
   readonly createdAt?: string;
@@ -83,6 +72,7 @@ export declare class Comment {
   readonly userSub: string;
   readonly title: string;
   readonly conetent: string;
+  readonly productID?: string;
   readonly product?: Product;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -104,11 +94,14 @@ export declare class Address {
 
 export declare class CartProduct {
   readonly id: string;
+  readonly userSub: string;
   readonly selectedQuantity: number;
   readonly selectedSize?: string;
   readonly selectedColor?: string;
   readonly selectedWeight?: number;
+  readonly productID: string;
   readonly product?: Product;
+  readonly cartID?: string;
   readonly cart?: Cart;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -132,6 +125,7 @@ export declare class Order {
   readonly deliveryNotes?: string;
   readonly totalPrice: number;
   readonly paymentMethod: string;
+  readonly cartID: string;
   readonly cart?: Cart;
   readonly addressID: string;
   readonly address?: Address;

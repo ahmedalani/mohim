@@ -2,474 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateAddress = /* GraphQL */ `
-  subscription OnCreateAddress {
-    onCreateAddress {
-      id
-      userSub
-      lable
-      addressText
-      city
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateAddress = /* GraphQL */ `
-  subscription OnUpdateAddress {
-    onUpdateAddress {
-      id
-      userSub
-      lable
-      addressText
-      city
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteAddress = /* GraphQL */ `
-  subscription OnDeleteAddress {
-    onDeleteAddress {
-      id
-      userSub
-      lable
-      addressText
-      city
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateCartProduct = /* GraphQL */ `
-  subscription OnCreateCartProduct {
-    onCreateCartProduct {
-      id
-      selectedQuantity
-      selectedSize
-      selectedColor
-      selectedWeight
-      productID
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      product {
-        id
-        title
-        description
-        image
-        images
-        sizes
-        colors
-        weights
-        avgRating
-        ratings
-        price
-        oldPrice
-        categoryID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        category {
-          id
-          title
-          description
-          image
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-      }
-    }
-  }
-`;
-export const onUpdateCartProduct = /* GraphQL */ `
-  subscription OnUpdateCartProduct {
-    onUpdateCartProduct {
-      id
-      selectedQuantity
-      selectedSize
-      selectedColor
-      selectedWeight
-      productID
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      product {
-        id
-        title
-        description
-        image
-        images
-        sizes
-        colors
-        weights
-        avgRating
-        ratings
-        price
-        oldPrice
-        categoryID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        category {
-          id
-          title
-          description
-          image
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-      }
-    }
-  }
-`;
-export const onDeleteCartProduct = /* GraphQL */ `
-  subscription OnDeleteCartProduct {
-    onDeleteCartProduct {
-      id
-      selectedQuantity
-      selectedSize
-      selectedColor
-      selectedWeight
-      productID
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      product {
-        id
-        title
-        description
-        image
-        images
-        sizes
-        colors
-        weights
-        avgRating
-        ratings
-        price
-        oldPrice
-        categoryID
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        category {
-          id
-          title
-          description
-          image
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-          startedAt
-        }
-      }
-    }
-  }
-`;
-export const onCreateCart = /* GraphQL */ `
-  subscription OnCreateCart {
-    onCreateCart {
-      id
-      userSub
-      cartProducts {
-        items {
-          id
-          selectedQuantity
-          selectedSize
-          selectedColor
-          selectedWeight
-          productID
-          cartID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateCart = /* GraphQL */ `
-  subscription OnUpdateCart {
-    onUpdateCart {
-      id
-      userSub
-      cartProducts {
-        items {
-          id
-          selectedQuantity
-          selectedSize
-          selectedColor
-          selectedWeight
-          productID
-          cartID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteCart = /* GraphQL */ `
-  subscription OnDeleteCart {
-    onDeleteCart {
-      id
-      userSub
-      cartProducts {
-        items {
-          id
-          selectedQuantity
-          selectedSize
-          selectedColor
-          selectedWeight
-          productID
-          cartID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateOrder = /* GraphQL */ `
-  subscription OnCreateOrder {
-    onCreateOrder {
-      id
-      userSub
-      deliveryNotes
-      totalPrice
-      paymentMethod
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      addressID
-      address {
-        id
-        userSub
-        lable
-        addressText
-        city
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateOrder = /* GraphQL */ `
-  subscription OnUpdateOrder {
-    onUpdateOrder {
-      id
-      userSub
-      deliveryNotes
-      totalPrice
-      paymentMethod
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      addressID
-      address {
-        id
-        userSub
-        lable
-        addressText
-        city
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteOrder = /* GraphQL */ `
-  subscription OnDeleteOrder {
-    onDeleteOrder {
-      id
-      userSub
-      deliveryNotes
-      totalPrice
-      paymentMethod
-      cartID
-      cart {
-        id
-        userSub
-        cartProducts {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      addressID
-      address {
-        id
-        userSub
-        lable
-        addressText
-        city
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateVendor = /* GraphQL */ `
   subscription OnCreateVendor {
     onCreateVendor {
@@ -531,6 +63,7 @@ export const onCreateCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -570,6 +103,7 @@ export const onUpdateCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -609,6 +143,7 @@ export const onDeleteCategory = /* GraphQL */ `
           sizes
           colors
           weights
+          model
           avgRating
           ratings
           price
@@ -637,6 +172,7 @@ export const onCreateProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -674,7 +210,6 @@ export const onCreateProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -693,6 +228,7 @@ export const onUpdateProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -730,7 +266,6 @@ export const onUpdateProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -749,6 +284,7 @@ export const onDeleteProduct = /* GraphQL */ `
       sizes
       colors
       weights
+      model
       avgRating
       ratings
       price
@@ -786,7 +322,6 @@ export const onDeleteProduct = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
@@ -816,6 +351,7 @@ export const onCreateComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -842,7 +378,6 @@ export const onCreateComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
     }
   }
 `;
@@ -868,6 +403,7 @@ export const onUpdateComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -894,7 +430,6 @@ export const onUpdateComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
     }
   }
 `;
@@ -920,6 +455,7 @@ export const onDeleteComment = /* GraphQL */ `
         sizes
         colors
         weights
+        model
         avgRating
         ratings
         price
@@ -946,7 +482,483 @@ export const onDeleteComment = /* GraphQL */ `
           startedAt
         }
       }
-      owner
+    }
+  }
+`;
+export const onCreateAddress = /* GraphQL */ `
+  subscription OnCreateAddress {
+    onCreateAddress {
+      id
+      userSub
+      lable
+      addressText
+      city
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAddress = /* GraphQL */ `
+  subscription OnUpdateAddress {
+    onUpdateAddress {
+      id
+      userSub
+      lable
+      addressText
+      city
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAddress = /* GraphQL */ `
+  subscription OnDeleteAddress {
+    onDeleteAddress {
+      id
+      userSub
+      lable
+      addressText
+      city
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateCartProduct = /* GraphQL */ `
+  subscription OnCreateCartProduct {
+    onCreateCartProduct {
+      id
+      userSub
+      selectedQuantity
+      selectedSize
+      selectedColor
+      selectedWeight
+      productID
+      cartID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      product {
+        id
+        title
+        description
+        image
+        images
+        sizes
+        colors
+        weights
+        model
+        avgRating
+        ratings
+        price
+        oldPrice
+        categoryID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        category {
+          id
+          title
+          description
+          image
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onUpdateCartProduct = /* GraphQL */ `
+  subscription OnUpdateCartProduct {
+    onUpdateCartProduct {
+      id
+      userSub
+      selectedQuantity
+      selectedSize
+      selectedColor
+      selectedWeight
+      productID
+      cartID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      product {
+        id
+        title
+        description
+        image
+        images
+        sizes
+        colors
+        weights
+        model
+        avgRating
+        ratings
+        price
+        oldPrice
+        categoryID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        category {
+          id
+          title
+          description
+          image
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onDeleteCartProduct = /* GraphQL */ `
+  subscription OnDeleteCartProduct {
+    onDeleteCartProduct {
+      id
+      userSub
+      selectedQuantity
+      selectedSize
+      selectedColor
+      selectedWeight
+      productID
+      cartID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      product {
+        id
+        title
+        description
+        image
+        images
+        sizes
+        colors
+        weights
+        model
+        avgRating
+        ratings
+        price
+        oldPrice
+        categoryID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        category {
+          id
+          title
+          description
+          image
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onCreateCart = /* GraphQL */ `
+  subscription OnCreateCart {
+    onCreateCart {
+      id
+      userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      cartProducts {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onUpdateCart = /* GraphQL */ `
+  subscription OnUpdateCart {
+    onUpdateCart {
+      id
+      userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      cartProducts {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onDeleteCart = /* GraphQL */ `
+  subscription OnDeleteCart {
+    onDeleteCart {
+      id
+      userSub
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      cartProducts {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const onCreateOrder = /* GraphQL */ `
+  subscription OnCreateOrder {
+    onCreateOrder {
+      id
+      userSub
+      deliveryNotes
+      totalPrice
+      paymentMethod
+      cartID
+      addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      address {
+        id
+        userSub
+        lable
+        addressText
+        city
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onUpdateOrder = /* GraphQL */ `
+  subscription OnUpdateOrder {
+    onUpdateOrder {
+      id
+      userSub
+      deliveryNotes
+      totalPrice
+      paymentMethod
+      cartID
+      addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      address {
+        id
+        userSub
+        lable
+        addressText
+        city
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const onDeleteOrder = /* GraphQL */ `
+  subscription OnDeleteOrder {
+    onDeleteOrder {
+      id
+      userSub
+      deliveryNotes
+      totalPrice
+      paymentMethod
+      cartID
+      addressID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      address {
+        id
+        userSub
+        lable
+        addressText
+        city
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      cart {
+        id
+        userSub
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        cartProducts {
+          nextToken
+          startedAt
+        }
+      }
     }
   }
 `;
