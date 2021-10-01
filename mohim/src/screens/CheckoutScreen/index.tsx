@@ -1,15 +1,13 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
-  TextInput,
   Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
+import {useRoute, RouteProp} from '@react-navigation/native';
 
 import {Address, CartProduct} from '../../models';
 import {Picker} from '@react-native-picker/picker';

@@ -37,6 +37,7 @@ type Comment @model @key(name: "byProduct", fields: ["productID"]) @auth(rules: 
 type Address @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
+  # update this to label : it's a typo!!!!!!
   lable: String!
   addressText: String!
   city: String!

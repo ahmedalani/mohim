@@ -17,14 +17,27 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Button from '../../components/Button';
 import styles from './styles';
 
-import {Auth} from 'aws-amplify';
+import {Auth, API} from 'aws-amplify';
 import {DataStore} from 'aws-amplify';
 
 // DATA
 import cities from '../../data/cities';
 import {Address} from '../../models';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 
-const AccountAddressScreen = () => {
+const AccountAddressScreen = ({
+  user,
+}: {
+  user: {
+    attributes: {
+      username: string;
+      phonenumber: string;
+      email: string;
+      sub: string;
+    };
+  } | null;
+}) => {
   // State
   const [addresses, setAddresses] = useState<Address[] | undefined>(undefined);
   const [newAddressInput, setNewAddressInput] = useState('');
@@ -40,14 +53,21 @@ const AccountAddressScreen = () => {
   const [city, setCity] = useState(cities[0].value);
 
   const fetchUserAddresses = async () => {
-    const userData = await Auth.currentAuthenticatedUser();
-    return DataStore.query(Address, c =>
-      c.userSub('eq', userData.attributes.sub),
-    )
-      .then(res => {
-        setAddresses(res);
+    const filter = {
+      userSub: {eq: user?.attributes.sub},
+    };
+    await API.graphql({
+      query: queries.listAddresses,
+      variables: {filter: filter},
+    })
+      .then((res: any) => {
+        console.log('res query listAddresses', res);
+        // set addresses
+        setAddresses(res.data.listAddresses.items);
       })
-      .catch(err => console.log(err));
+      .catch(err =>
+        console.log('Err @ addressScreen query listAddresses: ', err),
+      );
   };
   useEffect(() => {
     fetchUserAddresses();
@@ -64,55 +84,66 @@ const AccountAddressScreen = () => {
     }
 
     const postAddressToDatabase = async () => {
-      const userData = await Auth.currentAuthenticatedUser();
+      if (!user) {
+        Alert.alert('please login to continue');
+        return;
+      }
       let lableIndex = '';
       if (addresses) {
         let index = addresses?.length + 1;
         lableIndex = index.toString();
       }
-      await DataStore.save(
-        new Address({
-          userSub: userData.attributes.sub,
-          lable: `Address ${lableIndex}`,
-          addressText: newAddressInput,
-          city,
-        }),
-      );
+      const addressDetails = {
+        userSub: user?.attributes.sub,
+        lable: `Address ${lableIndex}`,
+        addressText: newAddressInput,
+        city: city,
+      };
+      await API.graphql({
+        query: mutations.createAddress,
+        variables: {input: addressDetails},
+      })
+        .then((res: any) => {
+          console.log('addressScreen query createAddress res: ', res);
+          fetchUserAddresses();
+          setNewAddressInput('');
+        })
+        .catch((err: any) =>
+          console.log('AddressScreen query createAddress Err: ', err),
+        );
     };
     postAddressToDatabase();
-    fetchUserAddresses();
-    setNewAddressInput('');
   };
 
   // subscribe to datastore for each address item
-  useEffect(() => {
-    const subscriptions = addresses?.map(ad =>
-      DataStore.observe(Address, ad.id).subscribe(msg => {
-        if (msg.opType === 'UPDATE') {
-          setAddresses(curAddresses => {
-            return (
-              // console.log('yo from inside curr'),
-              curAddresses?.map(adt => {
-                if (adt.id !== msg.element.id) {
-                  return adt;
-                }
-                return {
-                  ...adt,
-                  ...msg.element,
-                };
-              })
-            );
-          });
-        }
-        // console.log(msg.model, msg.opType, msg.element);
-      }),
-    );
-    return () => {
-      subscriptions?.forEach(sub => sub.unsubscribe());
-    };
+  // useEffect(() => {
+  //   const subscriptions = addresses?.map(ad =>
+  //     DataStore.observe(Address, ad.id).subscribe(msg => {
+  //       if (msg.opType === 'UPDATE') {
+  //         setAddresses(curAddresses => {
+  //           return (
+  //             // console.log('yo from inside curr'),
+  //             curAddresses?.map(adt => {
+  //               if (adt.id !== msg.element.id) {
+  //                 return adt;
+  //               }
+  //               return {
+  //                 ...adt,
+  //                 ...msg.element,
+  //               };
+  //             })
+  //           );
+  //         });
+  //       }
+  //       // console.log(msg.model, msg.opType, msg.element);
+  //     }),
+  //   );
+  //   return () => {
+  //     subscriptions?.forEach(sub => sub.unsubscribe());
+  //   };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleAddressEdit = async (action: string, lable?: string) => {
     //add error handling: if address is the same (no edit required) make sure to not submit, backend will fail with "error: createdAt read only"
@@ -129,23 +160,42 @@ const AccountAddressScreen = () => {
       ) {
         return;
       }
-      const original: Address | undefined = await DataStore.query(
-        Address,
-        curAddress.id,
-      );
-      if (original) {
-        await DataStore.save(
-          Address.copyOf(original, updated => {
-            updated.addressText =
-              existingAddressEdit || curAddress?.addressText;
-          }),
-        )
-          .then(() => {
-            setExistingAddressEdit(undefined);
-            fetchUserAddresses();
-          })
-          .catch(err => console.log(curAddress?.addressText, '❌ ✍️ ', err));
-      }
+      const itemToUpdate = {
+        id: curAddress.id,
+        addressText: existingAddressEdit || curAddress?.addressText,
+        _version: curAddress._version,
+      };
+      await API.graphql({
+        query: mutations.updateAddress,
+        variables: {input: itemToUpdate},
+      })
+        .then((res: any) => {
+          console.log('AddressScreen query updateAddress res: ', res);
+          setExistingAddressEdit(undefined);
+          fetchUserAddresses();
+        })
+        .catch(err =>
+          console.log('AddressScreen query updateAddress err: ', err),
+        );
+
+      // const original: Address | undefined = await DataStore.query(
+      //   Address,
+      //   curAddress.id,
+      // );
+      // if (original) {
+      //   await DataStore.save(
+      //     Address.copyOf(original, updated => {
+      //       updated.addressText =
+      //         existingAddressEdit || curAddress?.addressText;
+      //     }),
+      //   )
+      //     .then((res: any) => {
+      //       console.log('AddressScreen query updateAddress res: ', res);
+      //       setExistingAddressEdit(undefined);
+      //       fetchUserAddresses();
+      //     })
+      //     .catch(err => console.log('AddressScreen query updateAddress err: ', err));
+      // }
     };
     // start editing
     if (action === 'START') {

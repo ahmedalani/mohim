@@ -13,7 +13,12 @@ const ProfileStack = ({
   user,
 }: {
   user: {
-    attributes: {username: string; phonenumber: string; email: string};
+    attributes: {
+      username: string;
+      phonenumber: string;
+      email: string;
+      sub: string;
+    };
   } | null;
 }) => {
   return (
@@ -43,7 +48,7 @@ const ProfileStack = ({
         }}
       />
       <Stack.Screen
-        component={AccountAddressScreen}
+        children={() => <AccountAddressScreen user={user} />}
         name={'AccountAddressScreen'}
         options={{
           title: 'My Addresses 👤',
