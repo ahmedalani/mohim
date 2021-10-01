@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, Pressable} from 'react-native';
 // components
 import QuantitySelector from '../QuantitySelector';
@@ -9,7 +9,8 @@ import styles from './styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // Data
-import {DataStore} from '@aws-amplify/datastore';
+import {API, DataStore} from 'aws-amplify';
+import * as mutations from '../../graphql/mutations';
 import {CartProduct} from '../../models';
 
 interface CartProductItemProps {
@@ -21,21 +22,46 @@ const CartProductItem = (props: CartProductItemProps) => {
   // props
   const {product, ...cartProductDetails} = props.cartItem;
 
+  // state
+  const [localQuantity, setLocalQuantity] = useState(
+    cartProductDetails.selectedQuantity,
+  );
+  const [cpVersion, setCpVersion] = useState(props.cartItem._version);
+
+  // console.log('CartProductItem: _version: ', props.cartItem, props.cartItem['_version'], cpVersion);
   // quantity update with data store
   const updateQuantity = async (newQuantity: number) => {
-    // get the original product to manipulate
-    const original: CartProduct | undefined = await DataStore.query(
-      CartProduct,
-      cartProductDetails.id,
-    );
-    if (original) {
-      // once original found update the quantity
-      await DataStore.save(
-        CartProduct.copyOf(original, updated => {
-          updated.quantity = newQuantity;
-        }),
+    // console.log('newQuantity: ', newQuantity, props.cartItem['_version']);
+    const itemToUpdate = {
+      id: cartProductDetails.id,
+      selectedQuantity: newQuantity,
+      _version: cpVersion,
+    };
+    await API.graphql({
+      query: mutations.updateCartProduct,
+      variables: {input: itemToUpdate},
+    })
+      .then((res: any) => {
+        console.log('cartProductItem: update Quantity res:', res);
+        setLocalQuantity(res.data.updateCartProduct.selectedQuantity);
+        setCpVersion(res.data.updateCartProduct._version);
+      })
+      .catch((err: any) =>
+        console.log('cartProductItem: update quantity failed: ', err),
       );
-    }
+    // get the original product to manipulate
+    // const original: CartProduct | undefined = await DataStore.query(
+    //   CartProduct,
+    //   cartProductDetails.id,
+    // );
+    // if (original) {
+    //   // once original found update the quantity
+    //   await DataStore.save(
+    //     CartProduct.copyOf(original, updated => {
+    //       updated.selectedQuantity = newQuantity;
+    //     }),
+    //   );
+    // }
   };
 
   return (
@@ -75,7 +101,7 @@ const CartProductItem = (props: CartProductItemProps) => {
       </View>
       <View style={styles.quantityContainer}>
         <QuantitySelector
-          quantity={cartProductDetails.quantity}
+          quantity={localQuantity}
           setQuantity={updateQuantity}
         />
         <Pressable

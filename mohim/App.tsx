@@ -15,8 +15,11 @@ import InAppBrowser from 'react-native-inappbrowser-reborn';
 
 import RNBootSplash from 'react-native-bootsplash';
 
-import Amplify, {Auth, Hub} from 'aws-amplify';
+import Amplify, {Auth, Hub, API, DataStore} from 'aws-amplify';
 import config from './src/aws-exports';
+import {Cart} from './src/models';
+import * as queries from './src/graphql/queries';
+import * as mutations from './src/graphql/mutations';
 
 const urlOpener = async (url: string, redirectUrl: string) => {
   await InAppBrowser.isAvailable();
@@ -40,35 +43,79 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [userCart, setUserCart] = useState<Cart | undefined>(undefined);
+
+  // fetching user data on sign in then setUser state
+  const fetchUser = async () => {
+    return await Auth.currentAuthenticatedUser()
+      .then(res => {
+        console.log('user login response 🔥  ', res);
+        return res;
+      })
+      .catch(err => console.warn('from app.tsx fetchUser: ', err));
+  };
+  // creates a new cart for user
+  const createNewCart = async (userSub: string) => {
+    const cartDetails = {
+      userSub: userSub,
+    };
+    await API.graphql({
+      query: mutations.createCart,
+      variables: {input: cartDetails},
+    });
+  };
+  // look up user cart and if none found call createNewCart()
+  const fetchUserCart = async (userSub: string) => {
+    if (!userSub) {
+      console.log('app: no user found, can not fetch cart');
+      return;
+    }
+    // query all carts from db
+    await API.graphql({query: queries.listCarts})
+      .then((res: any) => {
+        // check if response valid then search through it for user cart and set the cart state
+        if (res.data?.listCarts?.items.length > 0) {
+          let userCartFromDB = res.data?.listCarts.items.filter(
+            (c: any) => c.userSub === userSub,
+          );
+          if (userCartFromDB.length > 0) {
+            setUserCart(userCartFromDB[0]);
+          } else {
+            // create new cart for user if none found
+            createNewCart(userSub);
+          }
+        }
+      })
+      .catch((err: any) => console.log('app.tsx query listCarts error', err));
+  };
 
   useEffect(() => {
     Hub.listen('auth', ({payload: {event, data}}) => {
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
-          fetchUser().then(userData => setUser(userData));
+          fetchUser().then(userData => {
+            // set user
+            setUser(userData);
+            // look up user cart then set the state for the cart
+            fetchUserCart(userData.attributes.sub);
+          });
           break;
         case 'signOut':
           setUser(null);
+          // TODO: clear *local* datastore
+          console.log('clearing Datastore YO');
+          DataStore.clear()
+            .then(res => console.log('cleared, ', res))
+            .catch(err => console.log('App.tsx: or not!', err));
           break;
         case 'signIn_failure':
         case 'cognitoHostedUI_failure':
-          console.log('Sign in failure', data);
+          console.log('Sign in failure from app.tsx Hub  🔥 ', data);
           break;
       }
     });
-
-    fetchUser().then(userData => setUser(userData));
   }, []);
-
-  const fetchUser = async () => {
-    return await Auth.currentAuthenticatedUser()
-      .then(res => {
-        console.log('user login response ', res);
-        return res;
-      })
-      .catch(err => console.warn('from app.tsx: ', err));
-  };
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -87,7 +134,7 @@ const App = () => {
     <View style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'dark-content' : 'light-content'} />
       <SafeAreaProvider>
-        <Router user={user} />
+        <Router user={user} userCart={userCart} />
       </SafeAreaProvider>
     </View>
   );

@@ -6,6 +6,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {},
+  optionsContainer: {
+    // backgroundColor: 'blue',
+  },
+  option: {
+    // backgroundColor: 'red',
+    margin: 5,
+    height: 150,
+    // width: 300,
+  },
   price: {
     fontSize: 18,
     fontWeight: 'bold',

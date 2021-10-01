@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProductScreen from '../screens/ProductScreen';
 import {SafeAreaView, TextInput, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import {Cart} from '../models';
 // Screens
 // import HomeScreen from '../screens/HomeScreen';
 const Stack = createStackNavigator();
@@ -44,6 +45,7 @@ const HeaderComponent = ({
 
 const HomeStack = ({
   user,
+  userCart,
 }: {
   user: {
     attributes: {
@@ -53,6 +55,7 @@ const HomeStack = ({
       sub: string;
     };
   } | null;
+  userCart: Cart | undefined;
 }) => {
   const [searchValue, setSearchValue] = useState('');
 
@@ -70,7 +73,7 @@ const HomeStack = ({
         {() => <HomeScreen searchValue={searchValue} />}
       </Stack.Screen>
       <Stack.Screen
-        children={() => <ProductScreen user={user} />}
+        children={() => <ProductScreen user={user} userCart={userCart} />}
         name={'ProductScreen'}
       />
     </Stack.Navigator>

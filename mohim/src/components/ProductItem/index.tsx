@@ -3,18 +3,11 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, Pressable, Image} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {Product} from '../../models';
 import styles from './styles';
 
 interface ProductItemProps {
-  item: {
-    id: string;
-    title: string;
-    image: string;
-    avgRating: number;
-    ratings?: number | undefined;
-    price: number;
-    oldPrice?: number | undefined;
-  };
+  item: Product;
   horizon?: boolean;
 }
 

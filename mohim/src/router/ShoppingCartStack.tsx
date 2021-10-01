@@ -6,23 +6,30 @@ import ShoppingCartScreen from '../screens/ShoppingCartScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 
 // data
-import {CartProduct} from '../models';
+import {Cart, CartProduct} from '../models';
 
 const Stack = createStackNavigator();
 
 const ShoppingCartStack = ({
   user,
+  userCart,
 }: {
   user: {
     attributes: {sub: string};
   } | null;
+  userCart: Cart | undefined;
 }) => {
+  console.log('shoppingCartStack, user, cart', user, userCart);
   const [checkoutProducts, setCheckoutProducts] = useState<CartProduct[]>([]);
   return (
     <Stack.Navigator>
       <Stack.Screen
         children={() => (
-          <ShoppingCartScreen setCheckoutProducts={setCheckoutProducts} />
+          <ShoppingCartScreen
+            setCheckoutProducts={setCheckoutProducts}
+            userCart={userCart}
+            user={user}
+          />
         )}
         name={'ShoppingCartScreen'}
         options={{

@@ -10,10 +10,14 @@ import ShoppingCartStack from './ShoppingCartStack';
 // screens
 import MenuScreen from '../screens/MenueScreen';
 
+// data
+import {Cart} from '../models';
+
 const Tab = createBottomTabNavigator();
 
 const BottomTabNav = ({
   user,
+  userCart,
 }: {
   user: {
     attributes: {
@@ -23,7 +27,9 @@ const BottomTabNav = ({
       sub: string;
     };
   } | null;
+  userCart: Cart | undefined;
 }) => {
+  console.log('bottomTabNav: user, cart: ', user, userCart);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -33,7 +39,7 @@ const BottomTabNav = ({
         headerShown: false,
       }}>
       <Tab.Screen
-        children={() => <HomeStack user={user} />}
+        children={() => <HomeStack user={user} userCart={userCart} />}
         name={'HomeStack'}
         options={{
           tabBarIcon: ({color}) => (
@@ -51,7 +57,7 @@ const BottomTabNav = ({
         }}
       />
       <Tab.Screen
-        children={() => <ShoppingCartStack user={user} />}
+        children={() => <ShoppingCartStack user={user} userCart={userCart} />}
         name={'shoppingCartStack'}
         options={{
           tabBarIcon: ({color}) => (

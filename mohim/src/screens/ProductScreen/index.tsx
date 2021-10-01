@@ -1,12 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {Text, ScrollView, ActivityIndicator, Alert} from 'react-native';
+import {View, Text, ScrollView, ActivityIndicator, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
 // Data
-import {DataStore} from 'aws-amplify';
-import {Product, CartProduct} from '../../models';
+import {API} from 'aws-amplify';
+import {Product, CartProduct, Cart} from '../../models';
+import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 
 // Styles
 import styles from './styles';
@@ -18,6 +20,7 @@ import ImageCarousel from '../../components/ImageCarousel';
 
 const ProductScreen = ({
   user,
+  userCart,
 }: {
   user: {
     attributes: {
@@ -27,12 +30,21 @@ const ProductScreen = ({
       sub: string;
     };
   } | null;
+  userCart: Cart | undefined;
 }) => {
   // State
   const [product, setProduct] = useState<Product | undefined>(undefined);
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+  // state for options
+  const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined,
   );
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedWeight, setSelectedWeight] = useState<string | undefined>(
+    undefined,
+  );
+
   const [quantity, setQuantity] = useState(1);
 
   const navigation = useNavigation();
@@ -47,29 +59,41 @@ const ProductScreen = ({
     if (!route.params?.id) {
       return;
     }
-    DataStore.query(Product, route.params.id).then(setProduct);
+    API.graphql({query: queries.getProduct, variables: {id: route.params.id}})
+      .then((res: any) => {
+        setProduct(res.data.getProduct);
+      })
+      .catch((err: any) => console.log('productScreen query product', err));
   }, [route.params?.id]);
 
-  // because selectedOption initialized with null
-  useEffect(() => {
-    if (product?.options) {
-      setSelectedOption(product.options[0]);
-    }
-  }, [product]);
-
-  // post the product as new cartProduct item to database for user and navigate to cartScreen
+  // post new cartProduct item to database for user and navigate to cartScreen
   const onBuyNow = async () => {
-    if (!product || !user) {
+    if (!product || !user || !userCart) {
       Alert.alert('please sign in to continue');
       return;
     }
-    const newCartProduct = new CartProduct({
+    const cartProductDetails = {
       userSub: user.attributes.sub,
-      quantity,
-      option: selectedOption,
+      selectedQuantity: quantity,
+      selectedSize,
+      selectedColor,
+      selectedWeight: selectedWeight ? parseInt(selectedWeight, 10) : undefined,
       productID: product.id,
-    });
-    await DataStore.save(newCartProduct);
+      cartProductProductId: product.id,
+      cartID: userCart.id,
+      cartProductCartId: userCart.id,
+    };
+    // query returns response with the new cartProduct just created
+    await API.graphql({
+      query: mutations.createCartProduct,
+      variables: {input: cartProductDetails},
+    }).catch((err: any) =>
+      console.log(
+        'ProductScreen onBuyNow posting new cartProduct query err: ',
+        err,
+      ),
+    );
+    // console.log('productScreen: added item to cart');
     navigation.goBack();
     navigation.navigate('shoppingCartStack');
   };
@@ -85,17 +109,44 @@ const ProductScreen = ({
       <ImageCarousel images={product.images} />
 
       {/* option selector */}
-      <Picker
-        selectedValue={selectedOption}
-        onValueChange={itemValue => setSelectedOption(itemValue)}>
-        {product.options?.map((option, i) => (
-          <Picker.Item
-            label={option}
-            value={option}
-            key={`product-option-${i}`}
-          />
-        ))}
-      </Picker>
+      <View style={styles.optionsContainer}>
+        <Picker
+          selectedValue={selectedSize}
+          onValueChange={itemValue => setSelectedSize(itemValue)}
+          style={styles.option}>
+          {product.sizes.map((option, i) => (
+            <Picker.Item
+              label={option || 'not Available'}
+              value={option}
+              key={`product-option-${i}`}
+            />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={selectedColor}
+          onValueChange={itemValue => setSelectedColor(itemValue)}
+          style={styles.option}>
+          {product.colors.map((option, i) => (
+            <Picker.Item
+              label={option || 'not Available'}
+              value={option}
+              key={`product-option-${i}`}
+            />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={selectedWeight}
+          onValueChange={itemValue => setSelectedWeight(itemValue)}
+          style={styles.option}>
+          {product.weights.map((option, i) => (
+            <Picker.Item
+              label={option?.toString()}
+              value={option}
+              key={`product-option-${i}`}
+            />
+          ))}
+        </Picker>
+      </View>
 
       {/* price */}
       <Text style={styles.price}>
@@ -124,6 +175,7 @@ const ProductScreen = ({
         text={'Buy now'}
         onPress={onBuyNow}
       />
+      {/* Display Comments */}
     </ScrollView>
   );
 };
