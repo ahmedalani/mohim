@@ -19,7 +19,6 @@ const ShoppingCartStack = ({
   } | null;
   userCart: Cart | undefined;
 }) => {
-  console.log('shoppingCartStack, user, cart', user, userCart);
   const [checkoutProducts, setCheckoutProducts] = useState<CartProduct[]>([]);
   return (
     <Stack.Navigator>

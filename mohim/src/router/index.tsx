@@ -19,7 +19,6 @@ const Router = ({
   } | null;
   userCart: Cart | undefined;
 }) => {
-  console.log('user from router: ', user?.attributes.email);
   return (
     <NavigationContainer>
       <Root.Navigator screenOptions={{headerShown: false}}>

@@ -6,7 +6,7 @@ import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
 // Data
 import {API} from 'aws-amplify';
-import {Product, CartProduct, Cart} from '../../models';
+import {Product, Cart} from '../../models';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 
@@ -83,7 +83,7 @@ const ProductScreen = ({
       cartID: userCart.id,
       cartProductCartId: userCart.id,
     };
-    // query returns response with the new cartProduct just created
+    // query returns the new cartProduct after just created
     await API.graphql({
       query: mutations.createCartProduct,
       variables: {input: cartProductDetails},
@@ -93,7 +93,6 @@ const ProductScreen = ({
         err,
       ),
     );
-    // console.log('productScreen: added item to cart');
     navigation.goBack();
     navigation.navigate('shoppingCartStack');
   };

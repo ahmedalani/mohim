@@ -9,7 +9,7 @@ import styles from './styles';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // Data
-import {API, DataStore} from 'aws-amplify';
+import {API} from 'aws-amplify';
 import * as mutations from '../../graphql/mutations';
 import {CartProduct} from '../../models';
 
@@ -28,10 +28,8 @@ const CartProductItem = (props: CartProductItemProps) => {
   );
   const [cpVersion, setCpVersion] = useState(props.cartItem._version);
 
-  // console.log('CartProductItem: _version: ', props.cartItem, props.cartItem['_version'], cpVersion);
   // quantity update with data store
   const updateQuantity = async (newQuantity: number) => {
-    // console.log('newQuantity: ', newQuantity, props.cartItem['_version']);
     const itemToUpdate = {
       id: cartProductDetails.id,
       selectedQuantity: newQuantity,
@@ -49,19 +47,6 @@ const CartProductItem = (props: CartProductItemProps) => {
       .catch((err: any) =>
         console.log('cartProductItem: update quantity failed: ', err),
       );
-    // get the original product to manipulate
-    // const original: CartProduct | undefined = await DataStore.query(
-    //   CartProduct,
-    //   cartProductDetails.id,
-    // );
-    // if (original) {
-    //   // once original found update the quantity
-    //   await DataStore.save(
-    //     CartProduct.copyOf(original, updated => {
-    //       updated.selectedQuantity = newQuantity;
-    //     }),
-    //   );
-    // }
   };
 
   return (

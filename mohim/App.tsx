@@ -49,10 +49,9 @@ const App = () => {
   const fetchUser = async () => {
     return await Auth.currentAuthenticatedUser()
       .then(res => {
-        console.log('user login response 🔥  ', res);
         return res;
       })
-      .catch(err => console.warn('from app.tsx fetchUser: ', err));
+      .catch(err => console.warn('err @ app.tsx fetchUser: ', err));
   };
   // creates a new cart for user
   const createNewCart = async (userSub: string) => {
@@ -70,20 +69,19 @@ const App = () => {
       console.log('app: no user found, can not fetch cart');
       return;
     }
+    const filter = {
+      userSub: {eq: userSub},
+    };
     // query all carts from db
-    await API.graphql({query: queries.listCarts})
+    await API.graphql({query: queries.listCarts, variables: {filter: filter}})
       .then((res: any) => {
         // check if response valid then search through it for user cart and set the cart state
         if (res.data?.listCarts?.items.length > 0) {
-          let userCartFromDB = res.data?.listCarts.items.filter(
-            (c: any) => c.userSub === userSub,
-          );
-          if (userCartFromDB.length > 0) {
-            setUserCart(userCartFromDB[0]);
-          } else {
-            // create new cart for user if none found
-            createNewCart(userSub);
-          }
+          setUserCart(res.data?.listCarts?.items[0]);
+        } else {
+          // create new cart for user if none found
+          console.log('@ app Calling createNewCart!!!');
+          createNewCart(userSub);
         }
       })
       .catch((err: any) => console.log('app.tsx query listCarts error', err));
@@ -104,10 +102,9 @@ const App = () => {
         case 'signOut':
           setUser(null);
           // TODO: clear *local* datastore
-          console.log('clearing Datastore YO');
           DataStore.clear()
-            .then(res => console.log('cleared, ', res))
-            .catch(err => console.log('App.tsx: or not!', err));
+            .then(res => console.log('cleared DataStore, ', res))
+            .catch(err => console.log('Err @ app clear dataStore', err));
           break;
         case 'signIn_failure':
         case 'cognitoHostedUI_failure':

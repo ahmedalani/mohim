@@ -29,7 +29,6 @@ const BottomTabNav = ({
   } | null;
   userCart: Cart | undefined;
 }) => {
-  console.log('bottomTabNav: user, cart: ', user, userCart);
   return (
     <Tab.Navigator
       screenOptions={{
