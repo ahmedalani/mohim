@@ -17,8 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Button from '../../components/Button';
 import styles from './styles';
 
-import {Auth, API} from 'aws-amplify';
-import {DataStore} from 'aws-amplify';
+import {API} from 'aws-amplify';
 
 // DATA
 import cities from '../../data/cities';
@@ -63,7 +62,10 @@ const AccountAddressScreen = ({
       .then((res: any) => {
         console.log('res query listAddresses', res);
         // set addresses
-        setAddresses(res.data.listAddresses.items);
+        const notDeleted = res.data.listAddresses.items.filter(
+          e => e._deleted !== true,
+        );
+        setAddresses(notDeleted);
       })
       .catch(err =>
         console.log('Err @ addressScreen query listAddresses: ', err),
@@ -177,25 +179,6 @@ const AccountAddressScreen = ({
         .catch(err =>
           console.log('AddressScreen query updateAddress err: ', err),
         );
-
-      // const original: Address | undefined = await DataStore.query(
-      //   Address,
-      //   curAddress.id,
-      // );
-      // if (original) {
-      //   await DataStore.save(
-      //     Address.copyOf(original, updated => {
-      //       updated.addressText =
-      //         existingAddressEdit || curAddress?.addressText;
-      //     }),
-      //   )
-      //     .then((res: any) => {
-      //       console.log('AddressScreen query updateAddress res: ', res);
-      //       setExistingAddressEdit(undefined);
-      //       fetchUserAddresses();
-      //     })
-      //     .catch(err => console.log('AddressScreen query updateAddress err: ', err));
-      // }
     };
     // start editing
     if (action === 'START') {
@@ -230,9 +213,21 @@ const AccountAddressScreen = ({
         {
           text: 'Yes',
           onPress: async () => {
-            await DataStore.delete(addressToDelete).then(() =>
-              updateAddressLable(),
-            );
+            const addressDetails = {
+              id: addressToDelete.id,
+              _version: addressToDelete._version,
+            };
+            await API.graphql({
+              query: mutations.deleteAddress,
+              variables: {input: addressDetails},
+            })
+              .then((res: any) => {
+                console.log('deleteAddress query res: ', res);
+                updateAddressLable();
+              })
+              .catch((err: any) =>
+                console.log('deleteAddress query err: ', err),
+              );
           },
         },
         // The "No" button
@@ -245,38 +240,50 @@ const AccountAddressScreen = ({
   };
   // update all addresses lables after deleting an address
   const updateAddressLable = async () => {
-    const userData = await Auth.currentAuthenticatedUser();
     // query all user addresses
-    await DataStore.query(Address, c =>
-      c.userSub('eq', userData.attributes.sub),
-    ).then(async res => {
-      // map over updated address [] from db
-      await Promise.all(
-        res.map(async (adres, i) => {
-          // create the new lable
-          let labelIndex = `Address ${(i + 1).toString()}`;
-          // query the original item from db
-          const original = await DataStore.query(Address, adres.id);
-          // check if lable needs to be updated and appropriately update
-          if (original && original.lable !== labelIndex) {
-            await DataStore.save(
-              Address.copyOf(original, updated => {
-                updated.lable = labelIndex;
-              }),
-            ).catch(err => console.log('accountaddressscreen line216 ', err));
-          }
-        }),
-      )
-        .then(() => {
-          fetchUserAddresses();
-        })
-        .catch(err => {
-          console.log('❌', err);
-          // becuase sometimes we get error from backend even though request went through and got excuted.
-          // posibly because internet connection is so slow
-          fetchUserAddresses();
-        });
-    });
+    const filter = {
+      userSub: {eq: user?.attributes.sub},
+    };
+    await API.graphql({
+      query: queries.listAddresses,
+      variables: {filter: filter},
+    })
+      .then(async (updatedAddressArray: any) => {
+        console.log(
+          'yo',
+          sortedAddresses(updatedAddressArray.data.listAddresses.items),
+        );
+        let i = 0;
+        const sortedAddressArr = sortedAddresses(
+          updatedAddressArray.data.listAddresses.items,
+        );
+        await Promise.all(
+          sortedAddressArr.map(async adres => {
+            if (adres._deleted !== true) {
+              // create the new lable
+              const labelIndex = `Address ${(i + 1).toString()}`;
+              // check if lable needs to be updated and appropriately update
+              if (adres.lable !== labelIndex) {
+                const itemToUpdate = {
+                  id: adres.id,
+                  lable: labelIndex,
+                  _version: adres._version,
+                };
+                await API.graphql({
+                  query: mutations.updateAddress,
+                  variables: {input: itemToUpdate},
+                });
+              }
+              console.log('increment i!', i, adres.lable);
+              i++;
+            }
+          }),
+        );
+      })
+      .then(() => fetchUserAddresses())
+      .catch((err: any) =>
+        console.log('updating addresses lables after delete query err: ', err),
+      );
   };
   // sort function to display addresses by lable incrementall
   // returns a sorted addresses array of models (obj)
