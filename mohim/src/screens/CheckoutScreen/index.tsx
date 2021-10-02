@@ -12,8 +12,8 @@ import {useRoute, RouteProp} from '@react-navigation/native';
 import {Address, CartProduct} from '../../models';
 import {Picker} from '@react-native-picker/picker';
 // data
-import {DataStore} from 'aws-amplify';
-
+import {API} from 'aws-amplify';
+import * as queries from '../../graphql/queries';
 // componenets
 import Button from '../../components/Button';
 // style
@@ -42,12 +42,16 @@ const CheckoutScreen = ({
         Alert.alert('no user found');
         return;
       }
+      const filter = {
+        userSub: {eq: user.attributes.sub},
+      };
       // query the datastore for user addresses
-      const userAddressList = await DataStore.query(Address, ad =>
-        ad.userSub('eq', user.attributes.sub),
-      );
+      const userAddressList = await API.graphql({
+        query: queries.listAddresses,
+        variables: {filter},
+      });
       // set addressList state
-      setAddressList(userAddressList);
+      setAddressList(userAddressList.data.listAddresses.items);
     };
     fetchUserAddresses();
   }, [user]);
