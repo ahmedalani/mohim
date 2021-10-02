@@ -4,6 +4,7 @@ type Category @model @auth(rules: [{allow: public}, {allow: private}]) {
   description: String!
   image: String!
   products: [Product] @connection(keyName: "byCategory", fields: ["id"])
+  trash: Boolean
 }
 
 type Product @model @key(name: "byCategory", fields: ["categoryID"]) @auth(rules: [{allow: public}, {allow: private}]) {
@@ -23,6 +24,7 @@ type Product @model @key(name: "byCategory", fields: ["categoryID"]) @auth(rules
   categoryID: ID
   category: Category @connection
   comments: [Comment] @connection(keyName: "byProduct", fields: ["id"])
+  trash: Boolean
 }
 
 type Comment @model @key(name: "byProduct", fields: ["productID"]) @auth(rules: [{allow: public}, {allow: private}]) {
@@ -32,15 +34,16 @@ type Comment @model @key(name: "byProduct", fields: ["productID"]) @auth(rules: 
   conetent: String!
   productID: ID
   product: Product @connection
+  trash: Boolean
 }
 
 type Address @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
-  # update this to label : it's a typo!!!!!!
-  lable: String!
   addressText: String!
   city: String!
+  label: String!
+  trash: Boolean
 }
 
 type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{allow: public}, {allow: private}]) {
@@ -54,12 +57,14 @@ type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{
   product: Product @connection
   cartID: ID
   cart: Cart @connection
+  trash: Boolean
 }
 
 type Cart @model @auth(rules: [{allow: public}, {allow: private}]) {
   id: ID!
   userSub: String!
   cartProducts: [CartProduct] @connection(keyName: "byCart", fields: ["id"])
+  trash: Boolean
 }
 
 type Order @model @auth(rules: [{allow: public}, {allow: private}]) {
@@ -72,5 +77,6 @@ type Order @model @auth(rules: [{allow: public}, {allow: private}]) {
   cart: Cart @connection
   addressID: ID!
   address: Address @connection
+  trash: Boolean
 }
  

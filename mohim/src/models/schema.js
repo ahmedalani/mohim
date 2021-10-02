@@ -45,6 +45,13 @@ export const schema = {
                         "associatedWith": "categoryID"
                     }
                 },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -229,6 +236,13 @@ export const schema = {
                         "associatedWith": "productID"
                     }
                 },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -340,6 +354,13 @@ export const schema = {
                         "targetName": "commentProductId"
                     }
                 },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -417,13 +438,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "lable": {
-                    "name": "lable",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "addressText": {
                     "name": "addressText",
                     "isArray": false,
@@ -436,6 +450,20 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "label": {
+                    "name": "label",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -574,6 +602,13 @@ export const schema = {
                         "targetName": "cartProductCartId"
                     }
                 },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -664,6 +699,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "cartID"
                     }
+                },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -794,6 +836,13 @@ export const schema = {
                         "targetName": "orderAddressId"
                     }
                 },
+                "trash": {
+                    "name": "trash",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -848,5 +897,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "884b6efaa2d54906d5b2f65133a477ef"
+    "version": "62dc8402355194d2077988b8e8b01015"
 };

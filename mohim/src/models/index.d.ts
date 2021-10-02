@@ -38,6 +38,7 @@ export declare class Category {
   readonly description: string;
   readonly image: string;
   readonly products?: (Product | null)[];
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Category, CategoryMetaData>);
@@ -61,6 +62,7 @@ export declare class Product {
   readonly categoryID?: string;
   readonly category?: Category;
   readonly comments?: (Comment | null)[];
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Product, ProductMetaData>);
@@ -74,6 +76,7 @@ export declare class Comment {
   readonly conetent: string;
   readonly productID?: string;
   readonly product?: Product;
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Comment, CommentMetaData>);
@@ -83,9 +86,10 @@ export declare class Comment {
 export declare class Address {
   readonly id: string;
   readonly userSub: string;
-  readonly lable: string;
   readonly addressText: string;
   readonly city: string;
+  readonly label: string;
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Address, AddressMetaData>);
@@ -103,6 +107,7 @@ export declare class CartProduct {
   readonly product?: Product;
   readonly cartID?: string;
   readonly cart?: Cart;
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<CartProduct, CartProductMetaData>);
@@ -113,6 +118,7 @@ export declare class Cart {
   readonly id: string;
   readonly userSub: string;
   readonly cartProducts?: (CartProduct | null)[];
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Cart, CartMetaData>);
@@ -129,6 +135,7 @@ export declare class Order {
   readonly cart?: Cart;
   readonly addressID: string;
   readonly address?: Address;
+  readonly trash?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Order, OrderMetaData>);
