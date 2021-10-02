@@ -57,6 +57,7 @@ const App = () => {
   const createNewCart = async (userSub: string) => {
     const cartDetails = {
       userSub: userSub,
+      trash: false,
     };
     await API.graphql({
       query: mutations.createCart,
@@ -70,10 +71,10 @@ const App = () => {
       return;
     }
     const filter = {
-      userSub: {eq: userSub},
+      and: [{userSub: {eq: userSub}}, {trash: {eq: false}}],
     };
     // query all carts from db
-    await API.graphql({query: queries.listCarts, variables: {filter: filter}})
+    await API.graphql({query: queries.listCarts, variables: {filter}})
       .then((res: any) => {
         // check if response valid then search through it for user cart and set the cart state
         if (res.data?.listCarts?.items.length > 0) {

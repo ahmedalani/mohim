@@ -2,45 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateVendor = /* GraphQL */ `
-  subscription OnCreateVendor {
-    onCreateVendor {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateVendor = /* GraphQL */ `
-  subscription OnUpdateVendor {
-    onUpdateVendor {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteVendor = /* GraphQL */ `
-  subscription OnDeleteVendor {
-    onDeleteVendor {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
 export const onCreateCategory = /* GraphQL */ `
   subscription OnCreateCategory {
     onCreateCategory {
@@ -48,6 +9,7 @@ export const onCreateCategory = /* GraphQL */ `
       title
       description
       image
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -69,6 +31,7 @@ export const onCreateCategory = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -88,6 +51,7 @@ export const onUpdateCategory = /* GraphQL */ `
       title
       description
       image
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -109,6 +73,7 @@ export const onUpdateCategory = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -128,6 +93,7 @@ export const onDeleteCategory = /* GraphQL */ `
       title
       description
       image
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -149,6 +115,7 @@ export const onDeleteCategory = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -178,6 +145,7 @@ export const onCreateProduct = /* GraphQL */ `
       price
       oldPrice
       categoryID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -188,6 +156,7 @@ export const onCreateProduct = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -205,6 +174,7 @@ export const onCreateProduct = /* GraphQL */ `
           title
           conetent
           productID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -234,6 +204,7 @@ export const onUpdateProduct = /* GraphQL */ `
       price
       oldPrice
       categoryID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -244,6 +215,7 @@ export const onUpdateProduct = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -261,6 +233,7 @@ export const onUpdateProduct = /* GraphQL */ `
           title
           conetent
           productID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -290,6 +263,7 @@ export const onDeleteProduct = /* GraphQL */ `
       price
       oldPrice
       categoryID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -300,6 +274,7 @@ export const onDeleteProduct = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -317,6 +292,7 @@ export const onDeleteProduct = /* GraphQL */ `
           title
           conetent
           productID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -337,6 +313,7 @@ export const onCreateComment = /* GraphQL */ `
       title
       conetent
       productID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -357,6 +334,7 @@ export const onCreateComment = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -367,6 +345,7 @@ export const onCreateComment = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -389,6 +368,7 @@ export const onUpdateComment = /* GraphQL */ `
       title
       conetent
       productID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -409,6 +389,7 @@ export const onUpdateComment = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -419,6 +400,7 @@ export const onUpdateComment = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -441,6 +423,7 @@ export const onDeleteComment = /* GraphQL */ `
       title
       conetent
       productID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -461,6 +444,7 @@ export const onDeleteComment = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -471,6 +455,7 @@ export const onDeleteComment = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -490,9 +475,10 @@ export const onCreateAddress = /* GraphQL */ `
     onCreateAddress {
       id
       userSub
-      lable
       addressText
       city
+      label
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -506,9 +492,10 @@ export const onUpdateAddress = /* GraphQL */ `
     onUpdateAddress {
       id
       userSub
-      lable
       addressText
       city
+      label
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -522,9 +509,10 @@ export const onDeleteAddress = /* GraphQL */ `
     onDeleteAddress {
       id
       userSub
-      lable
       addressText
       city
+      label
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -544,6 +532,7 @@ export const onCreateCartProduct = /* GraphQL */ `
       selectedWeight
       productID
       cartID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -564,6 +553,7 @@ export const onCreateCartProduct = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -574,6 +564,7 @@ export const onCreateCartProduct = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -588,6 +579,7 @@ export const onCreateCartProduct = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -612,6 +604,7 @@ export const onUpdateCartProduct = /* GraphQL */ `
       selectedWeight
       productID
       cartID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -632,6 +625,7 @@ export const onUpdateCartProduct = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -642,6 +636,7 @@ export const onUpdateCartProduct = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -656,6 +651,7 @@ export const onUpdateCartProduct = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -680,6 +676,7 @@ export const onDeleteCartProduct = /* GraphQL */ `
       selectedWeight
       productID
       cartID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -700,6 +697,7 @@ export const onDeleteCartProduct = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -710,6 +708,7 @@ export const onDeleteCartProduct = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -724,6 +723,7 @@ export const onDeleteCartProduct = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -742,6 +742,7 @@ export const onCreateCart = /* GraphQL */ `
     onCreateCart {
       id
       userSub
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -757,6 +758,7 @@ export const onCreateCart = /* GraphQL */ `
           selectedWeight
           productID
           cartID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -774,6 +776,7 @@ export const onUpdateCart = /* GraphQL */ `
     onUpdateCart {
       id
       userSub
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -789,6 +792,7 @@ export const onUpdateCart = /* GraphQL */ `
           selectedWeight
           productID
           cartID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -806,6 +810,7 @@ export const onDeleteCart = /* GraphQL */ `
     onDeleteCart {
       id
       userSub
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -821,6 +826,7 @@ export const onDeleteCart = /* GraphQL */ `
           selectedWeight
           productID
           cartID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -843,6 +849,7 @@ export const onCreateOrder = /* GraphQL */ `
       paymentMethod
       cartID
       addressID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -851,9 +858,10 @@ export const onCreateOrder = /* GraphQL */ `
       address {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -863,6 +871,7 @@ export const onCreateOrder = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -886,6 +895,7 @@ export const onUpdateOrder = /* GraphQL */ `
       paymentMethod
       cartID
       addressID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -894,9 +904,10 @@ export const onUpdateOrder = /* GraphQL */ `
       address {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -906,6 +917,7 @@ export const onUpdateOrder = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -929,6 +941,7 @@ export const onDeleteOrder = /* GraphQL */ `
       paymentMethod
       cartID
       addressID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -937,9 +950,10 @@ export const onDeleteOrder = /* GraphQL */ `
       address {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -949,6 +963,7 @@ export const onDeleteOrder = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt

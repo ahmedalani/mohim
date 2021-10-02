@@ -47,10 +47,8 @@ const ShoppingCartScreen = ({
       return;
     }
     const filter = {
-      cartID: {eq: userCart.id},
-      //after updated schema will check for trash:true
-      // and: [{cartID: {eq: userCart.id}}, {trash: {ne: true}}],
-    }; // HERE !!!! deleted not working check trillo
+      and: [{cartID: {eq: userCart.id}}, {trash: {ne: true}}],
+    };
     await API.graphql({
       query: queries.listCartProducts,
       variables: {filter: filter},
@@ -75,19 +73,29 @@ const ShoppingCartScreen = ({
   );
 
   // delete a cart item (product)
-  const deleteCartItem = async (id: string) => {
-    // todo post updated schema change product {trash: true} for deleted product then delete from db
-    const cpDetails = {
-      id: id,
-      // _version: 1,
+  const deleteCartItem = async (id, version) => {
+    // change product {trash: true} for deleted product then delete from db
+    const itemToUpdate = {
+      id,
+      trash: true,
+      _version: version,
     };
     await API.graphql({
-      query: mutations.deleteCartProduct,
-      variables: {input: cpDetails},
+      query: mutations.updateCartProduct,
+      variables: {input: itemToUpdate},
     })
       .then((res: any) => {
-        // todo post updated schema fetchCartProducts
-        console.log('shoppingCartScreen deleteCP: ', res);
+        const cpDetails = {
+          id: res.data.updateCartProduct.id,
+          _version: res.data.updateCartProduct._version,
+        };
+        API.graphql({
+          query: mutations.deleteCartProduct,
+          variables: {input: cpDetails},
+        });
+      })
+      .then(() => {
+        fetchCartProdutcs();
       })
       .catch((err: any) =>
         console.log('shoppingCartScreen deleteCP err: ', err),

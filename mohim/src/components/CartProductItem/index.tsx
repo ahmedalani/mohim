@@ -14,7 +14,7 @@ import * as mutations from '../../graphql/mutations';
 import {CartProduct} from '../../models';
 
 interface CartProductItemProps {
-  deleteItem: (cartItemId: string) => void;
+  deleteItem: (cartItemId: string, version: number) => void;
   cartItem: CartProduct;
 }
 
@@ -28,20 +28,23 @@ const CartProductItem = (props: CartProductItemProps) => {
   );
   const [cpVersion, setCpVersion] = useState(props.cartItem._version);
 
-  // quantity update with data store
+  // quantity update with db using graphql API
   const updateQuantity = async (newQuantity: number) => {
     const itemToUpdate = {
       id: cartProductDetails.id,
       selectedQuantity: newQuantity,
       _version: cpVersion,
     };
+    // update quantity in db
     await API.graphql({
       query: mutations.updateCartProduct,
       variables: {input: itemToUpdate},
     })
       .then((res: any) => {
         console.log('cartProductItem: update Quantity res:', res);
+        // update local quantity
         setLocalQuantity(res.data.updateCartProduct.selectedQuantity);
+        // update local version to keep up with db
         setCpVersion(res.data.updateCartProduct._version);
       })
       .catch((err: any) =>
@@ -90,7 +93,7 @@ const CartProductItem = (props: CartProductItemProps) => {
           setQuantity={updateQuantity}
         />
         <Pressable
-          onPress={() => props.deleteItem(props.cartItem.id)}
+          onPress={() => props.deleteItem(props.cartItem.id, props.cartItem._version)}
           style={{marginRight: 15}}>
           <AntDesign name="delete" color={'red'} size={25} />
         </Pressable>

@@ -53,7 +53,7 @@ const AccountAddressScreen = ({
 
   const fetchUserAddresses = async () => {
     const filter = {
-      userSub: {eq: user?.attributes.sub},
+      and: [{userSub: {eq: user?.attributes.sub}}, {trash: {eq: false}}],
     };
     await API.graphql({
       query: queries.listAddresses,
@@ -62,10 +62,10 @@ const AccountAddressScreen = ({
       .then((res: any) => {
         console.log('res query listAddresses', res);
         // set addresses
-        const notDeleted = res.data.listAddresses.items.filter(
-          e => e._deleted !== true,
-        );
-        setAddresses(notDeleted);
+        // const notDeleted = res.data.listAddresses.items.filter(
+        //   e => e._deleted !== true,
+        // );
+        setAddresses(res.data.listAddresses.items);
       })
       .catch(err =>
         console.log('Err @ addressScreen query listAddresses: ', err),
@@ -76,6 +76,7 @@ const AccountAddressScreen = ({
   }, []);
 
   const onSubmitNewAddress = () => {
+    // error handling before posting to db
     if (!newAddressInput) {
       Alert.alert('please fill new address to proceed');
       return;
@@ -84,22 +85,23 @@ const AccountAddressScreen = ({
       Alert.alert('too many addresses, delete one then try again');
       return;
     }
-
+    // post new address to the database
     const postAddressToDatabase = async () => {
       if (!user) {
         Alert.alert('please login to continue');
         return;
       }
-      let lableIndex = '';
+      let labelIndex = '';
       if (addresses) {
         let index = addresses?.length + 1;
-        lableIndex = index.toString();
+        labelIndex = index.toString();
       }
-      const addressDetails = {
+      const addressDetails: Address = {
         userSub: user?.attributes.sub,
-        lable: `Address ${lableIndex}`,
+        label: `Address ${labelIndex}`,
         addressText: newAddressInput,
         city: city,
+        trash: false,
       };
       await API.graphql({
         query: mutations.createAddress,
@@ -147,11 +149,11 @@ const AccountAddressScreen = ({
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
 
-  const handleAddressEdit = async (action: string, lable?: string) => {
+  const handleAddressEdit = async (action: string, label?: string) => {
     //add error handling: if address is the same (no edit required) make sure to not submit, backend will fail with "error: createdAt read only"
     // submit editing
     const submitEdit = async () => {
-      const curAddress = addresses?.filter(a => a.lable === lable)[0];
+      const curAddress = addresses?.filter(a => a.label === label)[0];
       if (!curAddress) {
         Alert.alert('address not found!');
         return;
@@ -182,12 +184,12 @@ const AccountAddressScreen = ({
     };
     // start editing
     if (action === 'START') {
-      if (activeAddress === lable) {
+      if (activeAddress === label) {
         submitEdit();
         setActiveAddress(undefined);
         return;
       }
-      setActiveAddress(lable);
+      setActiveAddress(label);
       return;
     }
     if (action === 'DONE') {
@@ -199,7 +201,7 @@ const AccountAddressScreen = ({
 
   const handleAddressDelete = async (labelOfAddressToDeleted: string) => {
     const addressToDelete = addresses?.filter(
-      c => c.lable === labelOfAddressToDeleted,
+      c => c.label === labelOfAddressToDeleted,
     )[0];
     if (!addressToDelete) {
       Alert.alert('something went wrong, please try again');
@@ -213,20 +215,35 @@ const AccountAddressScreen = ({
         {
           text: 'Yes',
           onPress: async () => {
-            const addressDetails = {
+            const itemToUpdate = {
               id: addressToDelete.id,
+              trash: true,
               _version: addressToDelete._version,
             };
+            // update trash column to true
             await API.graphql({
-              query: mutations.deleteAddress,
-              variables: {input: addressDetails},
+              query: mutations.updateAddress,
+              variables: {input: itemToUpdate},
             })
               .then((res: any) => {
-                console.log('deleteAddress query res: ', res);
-                updateAddressLable();
+                // console.log('res on update trash to true: ', res);
+                const addressUpdated = res.data.updateAddress;
+                const addressDetails = {
+                  id: addressUpdated.id,
+                  _version: addressUpdated._version,
+                };
+                // deleting address from db
+                API.graphql({
+                  query: mutations.deleteAddress,
+                  variables: {input: addressDetails},
+                });
+              })
+              .then(() => {
+                // console.log('deleteAddress query res: ', res);
+                updateAddresslabel();
               })
               .catch((err: any) =>
-                console.log('deleteAddress query err: ', err),
+                console.log('err deleteing address or', err),
               );
           },
         },
@@ -238,30 +255,31 @@ const AccountAddressScreen = ({
       ],
     );
   };
-  // update all addresses lables after deleting an address
-  const updateAddressLable = async () => {
-    // query all user addresses
+  // update all addresses labels after deleting an address
+  const updateAddresslabel = async () => {
+    // query all user addresses that are not deleted; you'd think we don't have to specify, lol
     const filter = {
-      userSub: {eq: user?.attributes.sub},
+      and: [{userSub: {eq: user?.attributes.sub}}, {trash: {eq: false}}],
     };
     await API.graphql({
       query: queries.listAddresses,
-      variables: {filter: filter},
+      variables: {filter},
     })
       .then(async (updatedAddressArray: any) => {
-        // filter the data for non deleted then sort based on address label
+        // sort the updated addresses list
         const sortedAddressArr = sortedAddresses(
-          updatedAddressArray.data.listAddresses.items.filter(ad => ad._deleted !== true),
+          updatedAddressArray.data.listAddresses.items,
         );
+        // map over the updated address list and fix all labels as
         await Promise.all(
           sortedAddressArr.map(async (adres, i) => {
-            // create the new lable
+            // create the new label
             const labelIndex = `Address ${(i + 1).toString()}`;
-            // check if lable needs to be updated and appropriately update
-            if (adres.lable !== labelIndex) {
+            // check if label needs to be updated and appropriately update
+            if (adres.label !== labelIndex) {
               const itemToUpdate = {
                 id: adres.id,
-                lable: labelIndex,
+                label: labelIndex,
                 _version: adres._version,
               };
               await API.graphql({
@@ -274,17 +292,17 @@ const AccountAddressScreen = ({
       })
       .then(() => fetchUserAddresses())
       .catch((err: any) =>
-        console.log('updating addresses lables after delete query err: ', err),
+        console.log('updating addresses labels after delete query err: ', err),
       );
   };
-  // sort function to display addresses by lable incrementall
+  // sort function to display addresses by label incrementall
   // returns a sorted addresses array of models (obj)
   const sortedAddresses = (arr: Address[]) => {
     const res = arr?.sort((a, b) => {
       // eslint-disable-next-line radix
-      let aNum = parseInt(a.lable.charAt(a.lable.length - 1));
+      let aNum = parseInt(a.label.charAt(a.label.length - 1));
       // eslint-disable-next-line radix
-      let bNum = parseInt(b.lable.charAt(b.lable.length - 1));
+      let bNum = parseInt(b.label.charAt(b.label.length - 1));
       return aNum - bNum;
     });
     return res;
@@ -302,24 +320,24 @@ const AccountAddressScreen = ({
           <View key={index} style={styles.addressItem}>
             <View style={styles.addressTextContainer}>
               <Text key={`${index}-label`} style={styles.addressLabel}>
-                {adrs.lable}
+                {adrs.label}
               </Text>
               <TextInput
                 key={`${index}-address`}
                 autoFocus={true}
-                editable={activeAddress === adrs.lable}
+                editable={activeAddress === adrs.label}
                 blurOnSubmit={true}
                 // value={existingAddressEdit}
                 onChangeText={setExistingAddressEdit}
-                onSubmitEditing={() => handleAddressEdit('DONE', adrs.lable)}
+                onSubmitEditing={() => handleAddressEdit('DONE', adrs.label)}
                 multiline={true}
                 numberOfLines={2}
                 style={{
                   ...styles.addressText,
                   backgroundColor:
-                    activeAddress === adrs.lable ? 'white' : '#efefef',
+                    activeAddress === adrs.label ? 'white' : '#efefef',
                   borderColor:
-                    activeAddress === adrs.lable ? '#52aebc' : '#efefef',
+                    activeAddress === adrs.label ? '#52aebc' : '#efefef',
                 }}>
                 {adrs.addressText}
               </TextInput>
@@ -328,14 +346,14 @@ const AccountAddressScreen = ({
               </Text>
             </View>
             <View style={styles.editAndDeletecontainer}>
-              <Pressable onPress={() => handleAddressEdit('START', adrs.lable)}>
-                {activeAddress === adrs.lable ? (
+              <Pressable onPress={() => handleAddressEdit('START', adrs.label)}>
+                {activeAddress === adrs.label ? (
                   <MaterialIcons name="done" color={'#52aebc'} size={25} />
                 ) : (
                   <AntDesign name="edit" color={'#f15e3b'} size={25} />
                 )}
               </Pressable>
-              <Pressable onPress={() => handleAddressDelete(adrs.lable)}>
+              <Pressable onPress={() => handleAddressDelete(adrs.label)}>
                 <AntDesign name="delete" color={'#f15e3b'} size={25} />
               </Pressable>
             </View>

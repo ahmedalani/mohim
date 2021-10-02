@@ -78,12 +78,13 @@ const ProductScreen = ({
       selectedSize,
       selectedColor,
       selectedWeight: selectedWeight ? parseInt(selectedWeight, 10) : undefined,
+      trash: false,
       productID: product.id,
       cartProductProductId: product.id,
       cartID: userCart.id,
       cartProductCartId: userCart.id,
     };
-    // query returns the new cartProduct after just created
+    // query to create new cartProduct: it returns the newly crerated cartProduct
     await API.graphql({
       query: mutations.createCartProduct,
       variables: {input: cartProductDetails},

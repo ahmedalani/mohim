@@ -43,9 +43,9 @@ const CheckoutScreen = ({
         return;
       }
       const filter = {
-        userSub: {eq: user.attributes.sub},
+        and: [{userSub: {eq: user.attributes.sub}}, {trash: {eq: false}}],
       };
-      // query the datastore for user addresses
+      // query the user addresses from db
       const userAddressList = await API.graphql({
         query: queries.listAddresses,
         variables: {filter},
@@ -95,9 +95,9 @@ const CheckoutScreen = ({
             onValueChange={setCheckoutAddress}>
             {addressList.map((address, i) => (
               <Picker.Item
-                key={`addressItem-${address.lable}-${i}`}
+                key={`addressItem-${address.label}-${i}`}
                 label={`${address.city}: ${address.addressText}`}
-                value={address.lable}
+                value={address.label}
               />
             ))}
           </Picker>

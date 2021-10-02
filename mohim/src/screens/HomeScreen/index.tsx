@@ -12,7 +12,6 @@ import {
 import {API, graphqlOperation} from 'aws-amplify';
 import {GraphQLResult} from '@aws-amplify/api';
 import {ListProductsQuery} from '../../API';
-// import {DataStore} from 'aws-amplify';
 import {Product} from '../../models';
 import * as queries from '../../graphql/queries';
 

@@ -6,8 +6,7 @@ import ProductScreen from '../screens/ProductScreen';
 import {SafeAreaView, TextInput, View} from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {Cart} from '../models';
-// Screens
-// import HomeScreen from '../screens/HomeScreen';
+
 const Stack = createStackNavigator();
 
 interface HeaderComponentProps {

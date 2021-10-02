@@ -2,67 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getVendor = /* GraphQL */ `
-  query GetVendor($id: ID!) {
-    getVendor(id: $id) {
-      id
-      name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listVendors = /* GraphQL */ `
-  query ListVendors(
-    $filter: ModelVendorFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listVendors(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncVendors = /* GraphQL */ `
-  query SyncVendors(
-    $filter: ModelVendorFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncVendors(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
@@ -70,6 +9,7 @@ export const getCategory = /* GraphQL */ `
       title
       description
       image
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -91,6 +31,7 @@ export const getCategory = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -115,6 +56,7 @@ export const listCategories = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -148,6 +90,7 @@ export const syncCategories = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -180,6 +123,7 @@ export const getProduct = /* GraphQL */ `
       price
       oldPrice
       categoryID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -190,6 +134,7 @@ export const getProduct = /* GraphQL */ `
         title
         description
         image
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -207,6 +152,7 @@ export const getProduct = /* GraphQL */ `
           title
           conetent
           productID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -241,6 +187,7 @@ export const listProducts = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -251,6 +198,7 @@ export const listProducts = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -295,6 +243,7 @@ export const syncProducts = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -305,6 +254,7 @@ export const syncProducts = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -329,6 +279,7 @@ export const getComment = /* GraphQL */ `
       title
       conetent
       productID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -349,6 +300,7 @@ export const getComment = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -359,6 +311,7 @@ export const getComment = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -386,6 +339,7 @@ export const listComments = /* GraphQL */ `
         title
         conetent
         productID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -406,6 +360,7 @@ export const listComments = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -437,6 +392,7 @@ export const syncComments = /* GraphQL */ `
         title
         conetent
         productID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -457,6 +413,7 @@ export const syncComments = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -474,9 +431,10 @@ export const getAddress = /* GraphQL */ `
     getAddress(id: $id) {
       id
       userSub
-      lable
       addressText
       city
+      label
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -495,9 +453,10 @@ export const listAddresses = /* GraphQL */ `
       items {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -525,9 +484,10 @@ export const syncAddresses = /* GraphQL */ `
       items {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -550,6 +510,7 @@ export const getCartProduct = /* GraphQL */ `
       selectedWeight
       productID
       cartID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -570,6 +531,7 @@ export const getCartProduct = /* GraphQL */ `
         price
         oldPrice
         categoryID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -580,6 +542,7 @@ export const getCartProduct = /* GraphQL */ `
           title
           description
           image
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -594,6 +557,7 @@ export const getCartProduct = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -623,6 +587,7 @@ export const listCartProducts = /* GraphQL */ `
         selectedWeight
         productID
         cartID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -643,6 +608,7 @@ export const listCartProducts = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -652,6 +618,7 @@ export const listCartProducts = /* GraphQL */ `
         cart {
           id
           userSub
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -686,6 +653,7 @@ export const syncCartProducts = /* GraphQL */ `
         selectedWeight
         productID
         cartID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -706,6 +674,7 @@ export const syncCartProducts = /* GraphQL */ `
           price
           oldPrice
           categoryID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -715,6 +684,7 @@ export const syncCartProducts = /* GraphQL */ `
         cart {
           id
           userSub
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -732,6 +702,7 @@ export const getCart = /* GraphQL */ `
     getCart(id: $id) {
       id
       userSub
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -747,6 +718,7 @@ export const getCart = /* GraphQL */ `
           selectedWeight
           productID
           cartID
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -769,6 +741,7 @@ export const listCarts = /* GraphQL */ `
       items {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -800,6 +773,7 @@ export const syncCarts = /* GraphQL */ `
       items {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -825,6 +799,7 @@ export const getOrder = /* GraphQL */ `
       paymentMethod
       cartID
       addressID
+      trash
       _version
       _deleted
       _lastChangedAt
@@ -833,9 +808,10 @@ export const getOrder = /* GraphQL */ `
       address {
         id
         userSub
-        lable
         addressText
         city
+        label
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -845,6 +821,7 @@ export const getOrder = /* GraphQL */ `
       cart {
         id
         userSub
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -873,6 +850,7 @@ export const listOrders = /* GraphQL */ `
         paymentMethod
         cartID
         addressID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -881,9 +859,10 @@ export const listOrders = /* GraphQL */ `
         address {
           id
           userSub
-          lable
           addressText
           city
+          label
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -893,6 +872,7 @@ export const listOrders = /* GraphQL */ `
         cart {
           id
           userSub
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -926,6 +906,7 @@ export const syncOrders = /* GraphQL */ `
         paymentMethod
         cartID
         addressID
+        trash
         _version
         _deleted
         _lastChangedAt
@@ -934,9 +915,10 @@ export const syncOrders = /* GraphQL */ `
         address {
           id
           userSub
-          lable
           addressText
           city
+          label
+          trash
           _version
           _deleted
           _lastChangedAt
@@ -946,6 +928,7 @@ export const syncOrders = /* GraphQL */ `
         cart {
           id
           userSub
+          trash
           _version
           _deleted
           _lastChangedAt
