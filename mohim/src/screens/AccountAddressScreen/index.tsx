@@ -249,33 +249,25 @@ const AccountAddressScreen = ({
       variables: {filter: filter},
     })
       .then(async (updatedAddressArray: any) => {
-        console.log(
-          'yo',
-          sortedAddresses(updatedAddressArray.data.listAddresses.items),
-        );
-        let i = 0;
+        // filter the data for non deleted then sort based on address label
         const sortedAddressArr = sortedAddresses(
-          updatedAddressArray.data.listAddresses.items,
+          updatedAddressArray.data.listAddresses.items.filter(ad => ad._deleted !== true),
         );
         await Promise.all(
-          sortedAddressArr.map(async adres => {
-            if (adres._deleted !== true) {
-              // create the new lable
-              const labelIndex = `Address ${(i + 1).toString()}`;
-              // check if lable needs to be updated and appropriately update
-              if (adres.lable !== labelIndex) {
-                const itemToUpdate = {
-                  id: adres.id,
-                  lable: labelIndex,
-                  _version: adres._version,
-                };
-                await API.graphql({
-                  query: mutations.updateAddress,
-                  variables: {input: itemToUpdate},
-                });
-              }
-              console.log('increment i!', i, adres.lable);
-              i++;
+          sortedAddressArr.map(async (adres, i) => {
+            // create the new lable
+            const labelIndex = `Address ${(i + 1).toString()}`;
+            // check if lable needs to be updated and appropriately update
+            if (adres.lable !== labelIndex) {
+              const itemToUpdate = {
+                id: adres.id,
+                lable: labelIndex,
+                _version: adres._version,
+              };
+              await API.graphql({
+                query: mutations.updateAddress,
+                variables: {input: itemToUpdate},
+              });
             }
           }),
         );
