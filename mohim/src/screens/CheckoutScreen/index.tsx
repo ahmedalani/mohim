@@ -33,10 +33,12 @@ const CheckoutScreen = ({
   const [checkoutAddress, setCheckoutAddress] = useState<Address | undefined>(
     undefined,
   );
+  const [paymentMethod, setPaymentMethod] = useState('');
   // state list of user addresses
   const [addressList, setAddressList] = useState<Address[]>([]);
-
+  // delivery notes
   const [deliveryNotes, setDeliveryNotes] = useState('');
+
   // to fetch user addresses from datastore
   useEffect(() => {
     const fetchUserAddresses = async () => {
@@ -104,6 +106,24 @@ const CheckoutScreen = ({
             ))}
           </Picker>
         </View>
+        {/* choose payment methode: for now just choose to post order to database */}
+        <View>
+          <Picker
+            selectedValue={paymentMethod}
+            onValueChange={setPaymentMethod}>
+            <Picker.Item
+              key={'paymentMethod-1'}
+              label={'Cash On Delivery'}
+              value={'CashOnDelivery'}
+            />
+            <Picker.Item
+              key={'paymentMethod-2'}
+              label={'Credit Card'}
+              value={'CreditCard'}
+            />
+          </Picker>
+        </View>
+        {/* Delivery Notes */}
         <TextInput
           style={styles.deliveryNotes}
           placeholder={'delivery Note ...'}
