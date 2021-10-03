@@ -8,13 +8,14 @@ import {
   Platform,
   TextInput,
 } from 'react-native';
-import {useRoute, RouteProp} from '@react-navigation/native';
+import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
-import {Address, CartProduct} from '../../models';
+import {Address, CartProduct, Cart} from '../../models';
 import {Picker} from '@react-native-picker/picker';
 // data
 import {API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
+import * as mutations from '../../graphql/mutations';
 // componenets
 import Button from '../../components/Button';
 // style
@@ -25,12 +26,14 @@ import styles from './styles';
 const CheckoutScreen = ({
   checkoutProducts,
   user,
+  userCart,
 }: {
   checkoutProducts: CartProduct[];
   user: {attributes: {sub: string}} | null;
+  userCart: Cart | undefined;
 }) => {
   // picker state
-  const [checkoutAddress, setCheckoutAddress] = useState<Address | undefined>(
+  const [checkoutAddress, setCheckoutAddress] = useState<String | undefined>(
     undefined,
   );
   const [paymentMethod, setPaymentMethod] = useState('');
@@ -60,13 +63,65 @@ const CheckoutScreen = ({
     fetchUserAddresses();
   }, [user]);
 
-  const placeOrder = async () => {
-    Alert.alert('Thanks for using MHM ❤️');
-    console.log('place order');
-  };
-
   const route: RouteProp<{params: {totalPrice: number}}, 'params'> = useRoute();
   const orderTotal = route.params?.totalPrice + 4.99;
+
+  const navigation = useNavigation();
+
+  // post new order to db and empty user cart if succussful
+  const placeOrder = async () => {
+    Alert.alert('Thanks for using MHM ❤️');
+    // create new order
+    const adres = addressList.find(ad => ad.label === checkoutAddress);
+    const newOrder = {
+      userSub: user?.attributes.sub,
+      deliveryNotes,
+      totalPrice: orderTotal,
+      paymentMethod,
+      cartID: userCart?.id,
+      orderCartId: userCart?.id,
+      addressID: adres?.id,
+      orderAddressId: adres?.id,
+      trash: false,
+    };
+    // post order to db
+    await API.graphql({
+      query: mutations.createOrder,
+      variables: {input: newOrder},
+    })
+      .then(() => {
+        // map over user cart products to remove them from cart
+        checkoutProducts.map(async p => {
+          const itemToUpdate = {
+            id: p.id,
+            trash: true,
+            _version: p._version,
+          };
+          // update trash column value to true
+          await API.graphql({
+            query: mutations.updateCartProduct,
+            variables: {input: itemToUpdate},
+          }).then((res: any) => {
+            const cpDetails = {
+              id: res.data.updateCartProduct.id,
+              _version: res.data.updateCartProduct._version,
+            };
+            // then delete item from db
+            API.graphql({
+              query: mutations.deleteCartProduct,
+              variables: {input: cpDetails},
+            });
+          });
+        });
+      })
+      .catch((err: any) =>
+        console.log('Posting new order and empty user cart err: ', err),
+      );
+
+    navigation.goBack();
+    navigation.navigate('HomeStack');
+    console.log('place order');
+  };
 
   return (
     <KeyboardAvoidingView

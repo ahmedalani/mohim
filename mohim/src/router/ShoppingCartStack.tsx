@@ -38,7 +38,11 @@ const ShoppingCartStack = ({
       />
       <Stack.Screen
         children={() => (
-          <CheckoutScreen checkoutProducts={checkoutProducts} user={user} />
+          <CheckoutScreen
+            checkoutProducts={checkoutProducts}
+            user={user}
+            userCart={userCart}
+          />
         )}
         name={'CheckoutScreen'}
         options={{
