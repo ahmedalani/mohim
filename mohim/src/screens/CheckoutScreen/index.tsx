@@ -6,6 +6,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from 'react-native';
 import {useRoute, RouteProp} from '@react-navigation/native';
 
@@ -35,6 +36,7 @@ const CheckoutScreen = ({
   // state list of user addresses
   const [addressList, setAddressList] = useState<Address[]>([]);
 
+  const [deliveryNote, setDeliveryNote] = useState('');
   // to fetch user addresses from datastore
   useEffect(() => {
     const fetchUserAddresses = async () => {
@@ -102,6 +104,12 @@ const CheckoutScreen = ({
             ))}
           </Picker>
         </View>
+        <TextInput
+          style={styles.deliveryNote}
+          placeholder={'delivery Note ...'}
+          value={deliveryNote}
+          onChangeText={setDeliveryNote}
+        />
         {/* Button checkout order : place order to datastor then navigate to homescreen */}
         <Button text={'Place Order'} onPress={placeOrder} />
       </ScrollView>

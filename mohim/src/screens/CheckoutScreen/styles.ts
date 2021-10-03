@@ -32,6 +32,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
+  deliveryNote: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    height: 50,
+    fontFamily: 'helvetica',
+    fontSize: 18,
+    padding: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
 });
 
 export default styles;
