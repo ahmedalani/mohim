@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
   },
-  deliveryNote: {
+  deliveryNotes: {
     flex: 1,
     backgroundColor: '#ffffff',
     height: 50,
