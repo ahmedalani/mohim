@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, ActivityIndicator, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
 // Data
@@ -12,7 +13,7 @@ import * as mutations from '../../graphql/mutations';
 
 // Styles
 import styles from './styles';
-
+import { bluePickerStyles } from '../../shared/customPickerStyles';
 // Components
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
@@ -110,7 +111,39 @@ const ProductScreen = ({
 
       {/* option selector */}
       <View style={styles.optionsContainer}>
-        <Picker
+        <RNPickerSelect
+          key={product.id + 'model'}
+          style={bluePickerStyles}
+          onValueChange={value => console.log(value)}
+          items={product.model.map((option, i) => {
+            return {label: option, value: option};
+          })}
+        />
+        <RNPickerSelect
+          key={product.id + 'sizes'}
+          style={bluePickerStyles}
+          onValueChange={value => console.log(value)}
+          items={product.sizes.map((option, i) => {
+            return {label: option, value: option};
+          })}
+        />
+        <RNPickerSelect
+          key={product.id + 'colors'}
+          style={bluePickerStyles}
+          onValueChange={value => console.log(value)}
+          items={product.colors.map((option, i) => {
+            return {label: option, value: option};
+          })}
+        />
+        <RNPickerSelect
+          key={product.id + 'weights'}
+          style={bluePickerStyles}
+          onValueChange={value => console.log(value)}
+          items={product.weights.map((option, i) => {
+            return {label: option?.toString(), value: option?.toString()};
+          })}
+        />
+        {/* <Picker
           selectedValue={selectedSize}
           onValueChange={itemValue => setSelectedSize(itemValue)}
           style={styles.option}>
@@ -145,7 +178,7 @@ const ProductScreen = ({
               key={`product-option-${i}`}
             />
           ))}
-        </Picker>
+        </Picker> */}
       </View>
 
       {/* price */}
