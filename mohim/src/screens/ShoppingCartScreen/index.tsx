@@ -1,11 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, {useCallback, useState, Dispatch, SetStateAction} from 'react';
 import {View, StyleSheet, FlatList, Text, Alert} from 'react-native';
 import Button from '../../components/Button';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -60,16 +54,17 @@ const ShoppingCartScreen = ({
         console.log('shoppingCartScreen couldnt query cartproducts: ', err),
       );
   };
-  useEffect(() => {
-    console.log('how many times we fetching the cart: ');
-    fetchCartProdutcs();
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('how many times we fetching the cart: ');
+  //   fetchCartProdutcs();
+  // }, [user, userCart]);
+
   // fetch data on screen focus: using it so when we navigate to this screen with new product we fetch for it to see it
   useFocusEffect(
     useCallback(() => {
       console.log('fetching data on focus!!');
       fetchCartProdutcs();
-    }, []),
+    }, [user, userCart]),
   );
 
   // delete a cart item (product)
