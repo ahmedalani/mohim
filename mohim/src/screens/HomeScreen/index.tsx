@@ -25,14 +25,15 @@ const HomeScreen = ({searchValue}: {searchValue: string}) => {
 
   useEffect(() => {
     // setProducts([]);
-    const createProduct = async () => {
+    // this needs some work: check android
+    const fetchProducts = async () => {
       const allProducts = (await API.graphql(
         graphqlOperation(queries.listProducts),
       )) as GraphQLResult<ListProductsQuery>;
       console.log('query results: ', allProducts?.data?.listProducts?.items);
       setProducts(allProducts?.data?.listProducts?.items);
     };
-    createProduct();
+    fetchProducts();
   }, []);
 
   const SECTIONS = [

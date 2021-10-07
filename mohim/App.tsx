@@ -71,13 +71,14 @@ const App = () => {
       return;
     }
     const filter = {
-      and: [{userSub: {eq: userSub}}, {trash: {eq: false}}],
+      and: [{userSub: {eq: userSub}}, {trash: {ne: true}}],
     };
     // query all carts from db
     await API.graphql({query: queries.listCarts, variables: {filter}})
       .then((res: any) => {
         // check if response valid then search through it for user cart and set the cart state
         if (res.data?.listCarts?.items.length > 0) {
+          console.log('App.tsx found cart!!!!!');
           setUserCart(res.data?.listCarts?.items[0]);
         } else {
           // create new cart for user if none found
