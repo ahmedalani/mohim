@@ -13,7 +13,7 @@ import * as mutations from '../../graphql/mutations';
 
 // Styles
 import styles from './styles';
-import { bluePickerStyles } from '../../shared/customPickerStyles';
+import {bluePickerStyles} from '../../shared/customPickerStyles';
 // Components
 import QuantitySelector from '../../components/QuantitySelector';
 import Button from '../../components/Button';
@@ -36,6 +36,9 @@ const ProductScreen = ({
   // State
   const [product, setProduct] = useState<Product | undefined>(undefined);
   // state for options
+  const [selectedModel, setSelectedModel] = useState<string | undefined>(
+    undefined,
+  );
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     undefined,
   );
@@ -78,6 +81,7 @@ const ProductScreen = ({
       selectedQuantity: quantity,
       selectedSize,
       selectedColor,
+      selectedModel,
       selectedWeight: selectedWeight ? parseInt(selectedWeight, 10) : undefined,
       trash: false,
       productID: product.id,
@@ -114,32 +118,37 @@ const ProductScreen = ({
         <RNPickerSelect
           key={product.id + 'model'}
           style={bluePickerStyles}
-          onValueChange={value => console.log(value)}
-          items={product.model.map((option, i) => {
+          placeholder={{label: 'select Model ...'}}
+          onValueChange={value => setSelectedModel(value)}
+          items={product.model.map(option => {
             return {label: option, value: option};
           })}
         />
         <RNPickerSelect
           key={product.id + 'sizes'}
           style={bluePickerStyles}
-          onValueChange={value => console.log(value)}
-          items={product.sizes.map((option, i) => {
+          placeholder={{label: 'select Size ...'}}
+          onValueChange={value => setSelectedSize(value)}
+          items={product.sizes.map(option => {
             return {label: option, value: option};
           })}
         />
         <RNPickerSelect
           key={product.id + 'colors'}
           style={bluePickerStyles}
-          onValueChange={value => console.log(value)}
-          items={product.colors.map((option, i) => {
+          placeholder={{label: 'select Color ...'}}
+          onValueChange={value => setSelectedColor(value)}
+          items={product.colors.map(option => {
             return {label: option, value: option};
           })}
         />
         <RNPickerSelect
           key={product.id + 'weights'}
           style={bluePickerStyles}
-          onValueChange={value => console.log(value)}
-          items={product.weights.map((option, i) => {
+          placeholder={{label: 'select Weights ...'}}
+          onValueChange={value => setSelectedWeight(value)}
+          items={product.weights.map(option => {
+            // changed the weight to string so make sure to change back to number when add to cartProduct
             return {label: option?.toString(), value: option?.toString()};
           })}
         />
