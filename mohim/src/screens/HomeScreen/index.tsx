@@ -9,32 +9,41 @@ import {
 } from 'react-native';
 
 // Data
-import {API, graphqlOperation} from 'aws-amplify';
-import {GraphQLResult} from '@aws-amplify/api';
-import {ListProductsQuery} from '../../API';
+import {API} from 'aws-amplify';
 import {Product} from '../../models';
 import * as queries from '../../graphql/queries';
 
 // componenets
 import ProductItem from '../../components/ProductItem';
 
-const HomeScreen = ({searchValue}: {searchValue: string}) => {
+const HomeScreen = ({
+  searchValue,
+  user,
+}: {
+  searchValue: string;
+  user: {attributes: {sub: string}} | null;
+}) => {
   console.log('searchValue: ', searchValue);
   // state
   const [products, setProducts] = useState<Product[]>([]);
 
+  const fetchProducts = async () => {
+    await API.graphql({
+      query: queries.listProducts,
+      variables: {filter: {trash: {ne: true}}, limit: 500},
+    })
+      .then((res: any) => {
+        console.log('homeScreen query products res: ', res);
+        if (res.data.listProducts.items.length > 0) {
+          setProducts(res?.data?.listProducts?.items);
+        }
+      })
+      .catch((err: any) => console.log('homeScreen query products err: ', err));
+  };
   useEffect(() => {
-    // setProducts([]);
-    // this needs some work: check android
-    const fetchProducts = async () => {
-      const allProducts = (await API.graphql(
-        graphqlOperation(queries.listProducts),
-      )) as GraphQLResult<ListProductsQuery>;
-      console.log('query results: ', allProducts?.data?.listProducts?.items);
-      setProducts(allProducts?.data?.listProducts?.items);
-    };
     fetchProducts();
-  }, []);
+    return () => {};
+  }, [user?.attributes.sub]);
 
   const SECTIONS = [
     {title: 'Sponsored', horizontal: true, data: products},
