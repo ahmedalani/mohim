@@ -69,7 +69,7 @@ const HomeStack = ({
         ),
       }}>
       <Stack.Screen name={'HomeScreen'} options={{title: 'Home Page'}}>
-        {() => <HomeScreen searchValue={searchValue} />}
+        {() => <HomeScreen searchValue={searchValue} user={user} />}
       </Stack.Screen>
       <Stack.Screen
         children={() => <ProductScreen user={user} userCart={userCart} />}
