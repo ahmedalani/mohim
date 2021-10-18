@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, ActivityIndicator, Alert} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
@@ -121,7 +120,7 @@ const ProductScreen = ({
           placeholder={{label: 'select Model ...'}}
           onValueChange={value => setSelectedModel(value)}
           items={product.model.map(option => {
-            return {label: option, value: option};
+            return {label: option || 'not found', value: option};
           })}
         />
         <RNPickerSelect
@@ -130,7 +129,7 @@ const ProductScreen = ({
           placeholder={{label: 'select Size ...'}}
           onValueChange={value => setSelectedSize(value)}
           items={product.sizes.map(option => {
-            return {label: option, value: option};
+            return {label: option || 'not found', value: option};
           })}
         />
         <RNPickerSelect
@@ -139,7 +138,7 @@ const ProductScreen = ({
           placeholder={{label: 'select Color ...'}}
           onValueChange={value => setSelectedColor(value)}
           items={product.colors.map(option => {
-            return {label: option, value: option};
+            return {label: option || 'not found', value: option};
           })}
         />
         <RNPickerSelect
@@ -149,45 +148,12 @@ const ProductScreen = ({
           onValueChange={value => setSelectedWeight(value)}
           items={product.weights.map(option => {
             // changed the weight to string so make sure to change back to number when add to cartProduct
-            return {label: option?.toString(), value: option?.toString()};
+            return {
+              label: option?.toString() || 'not found',
+              value: option?.toString(),
+            };
           })}
         />
-        {/* <Picker
-          selectedValue={selectedSize}
-          onValueChange={itemValue => setSelectedSize(itemValue)}
-          style={styles.option}>
-          {product.sizes.map((option, i) => (
-            <Picker.Item
-              label={option || 'not Available'}
-              value={option}
-              key={`product-option-${i}`}
-            />
-          ))}
-        </Picker>
-        <Picker
-          selectedValue={selectedColor}
-          onValueChange={itemValue => setSelectedColor(itemValue)}
-          style={styles.option}>
-          {product.colors.map((option, i) => (
-            <Picker.Item
-              label={option || 'not Available'}
-              value={option}
-              key={`product-option-${i}`}
-            />
-          ))}
-        </Picker>
-        <Picker
-          selectedValue={selectedWeight}
-          onValueChange={itemValue => setSelectedWeight(itemValue)}
-          style={styles.option}>
-          {product.weights.map((option, i) => (
-            <Picker.Item
-              label={option?.toString()}
-              value={option}
-              key={`product-option-${i}`}
-            />
-          ))}
-        </Picker> */}
       </View>
 
       {/* price */}

@@ -358,7 +358,7 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.15.7):
     - React-Core
-  - RNCPicker (2.0.0):
+  - RNCPicker (2.1.0):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
@@ -597,7 +597,7 @@ SPEC CHECKSUMS:
   RNAWSCognito: 7a4bdf757dcfdefd07f23e4fa83200d8eeff6818
   RNBootSplash: b204961cfe4f0bb5bf94d019b4e546b062e46f92
   RNCAsyncStorage: 7f72b8273be1f92076b16f68b333160d562eebad
-  RNCPicker: 4cc5f18bb7942bd63c3fa51237ce9603606b94e7
+  RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: 9596e687e7d765a2960ca44dd254a23e810f9e66
   RNInAppBrowser: 5672feb84e731411f6911979c71649c240a90202
