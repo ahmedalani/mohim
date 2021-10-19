@@ -74,9 +74,11 @@ const CheckoutScreen = ({
   const placeOrder = async () => {
     if (!checkoutAddress) {
       Alert.alert('please choose an address to proceed');
+      return;
     }
     if (!deliveryNotes) {
       Alert.alert('please type a delivery note to proceed');
+      return;
     }
     // create new order
     const adres = addressList.find(ad => ad.label === checkoutAddress);
