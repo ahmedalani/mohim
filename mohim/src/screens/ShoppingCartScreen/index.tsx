@@ -49,6 +49,7 @@ const ShoppingCartScreen = ({
     })
       .then((res: any) => {
         setCartProducts(res.data.listCartProducts.items);
+        console.log('shoppingCartScreen cps: res', res.data.listCartProducts.items);
       })
       .catch((err: any) =>
         console.log('shoppingCartScreen couldnt query cartproducts: ', err),

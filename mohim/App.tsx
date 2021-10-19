@@ -59,41 +59,53 @@ const App = () => {
       userSub: userSub,
       trash: false,
     };
-    await API.graphql({
+    const nc = await API.graphql({
       query: mutations.createCart,
       variables: {input: cartDetails},
     });
-  };
-  // look up user cart and if none found call createNewCart()
-  const fetchUserCart = async (userSub: string) => {
-    if (!userSub) {
-      console.log('app: no user found, can not fetch cart');
-      return;
-    }
-    const filter = {
-      and: [{userSub: {eq: userSub}}, {trash: {ne: true}}],
-    };
-    // query all carts from db
-    await API.graphql({query: queries.listCarts, variables: {filter}})
-      .then((res: any) => {
-        // check if response valid then search through it for user cart and set the cart state
-        if (res.data?.listCarts?.items.length > 0) {
-          console.log('App.tsx found cart!!!!!');
-          setUserCart(res.data?.listCarts?.items[0]);
-        } else {
-          // create new cart for user if none found
-          console.log('@ app Calling createNewCart!!!');
-          createNewCart(userSub);
-        }
-      })
-      .catch((err: any) => console.log('app.tsx query listCarts error', err));
+    console.log('App.tsx created new cart res: ', nc.data?.createCart);
+    setUserCart(nc.data?.createCart);
   };
 
   useEffect(() => {
+    // look up user cart and if none found call createNewCart()
+    const fetchUserCart = async (userSub: string) => {
+      console.log('how many times fetchUserCart getting called?');
+      if (!userSub) {
+        console.log('app: no user found, can not fetch cart');
+        return;
+      }
+      // handling bug: this function gets called twice and end up creating 2 carts for new users; it didn't fix the issue (issue is fixed regardless) but I kept cause why not, just as an extra measure
+      if (userCart) {
+        console.log(
+          'app.tsx trying to fetchUserCart but userCart state is not undefined',
+          userCart,
+        );
+        return;
+      }
+      const filter = {
+        and: [{userSub: {eq: userSub}}, {trash: {ne: true}}],
+      };
+      // query all carts from db
+      await API.graphql({query: queries.listCarts, variables: {filter}})
+        .then((res: any) => {
+          // check if response valid then search through it for user cart and set the cart state
+          if (res.data?.listCarts?.items[0]?.userSub) {
+            console.log('App.tsx found cart!!!!!', res.data?.listCarts?.items);
+            setUserCart(res.data?.listCarts?.items[0]);
+          } else {
+            // create new cart for user if none found
+            console.log('@ app Calling createNewCart!!!');
+            createNewCart(userSub);
+          }
+        })
+        .catch((err: any) => console.log('app.tsx query listCarts error', err));
+    };
+    // hub to listen for user login/out
     Hub.listen('auth', ({payload: {event, data}}) => {
       switch (event) {
-        case 'signIn':
-        case 'cognitoHostedUI':
+        case 'signIn' || 'cognitoHostedUI':
+          // case 'cognitoHostedUI':
           fetchUser().then(userData => {
             // set user
             setUser(userData);
@@ -103,6 +115,7 @@ const App = () => {
           break;
         case 'signOut':
           setUser(null);
+          setUserCart(undefined);
           // TODO: clear *local* datastore
           DataStore.clear()
             .then(res => console.log('cleared DataStore, ', res))
@@ -114,7 +127,9 @@ const App = () => {
           break;
       }
     });
+    return () => {};
   }, []);
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
