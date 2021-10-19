@@ -11,7 +11,9 @@ import {
 import {useRoute, RouteProp, useNavigation} from '@react-navigation/native';
 
 import {Address, CartProduct, Cart} from '../../models';
-import {Picker} from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
+import {bluePickerStyles} from '../../shared/customPickerStyles';
+
 // data
 import {API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
@@ -70,7 +72,12 @@ const CheckoutScreen = ({
 
   // post new order to db and empty user cart if succussful
   const placeOrder = async () => {
-    Alert.alert('Thanks for using MHM ❤️');
+    if (!checkoutAddress) {
+      Alert.alert('please choose an address to proceed');
+    }
+    if (!deliveryNotes) {
+      Alert.alert('please type a delivery note to proceed');
+    }
     // create new order
     const adres = addressList.find(ad => ad.label === checkoutAddress);
     const newOrder = {
@@ -117,10 +124,10 @@ const CheckoutScreen = ({
       .catch((err: any) =>
         console.log('Posting new order and empty user cart err: ', err),
       );
-
+    Alert.alert('Thanks for using MHM ❤️');
     navigation.goBack();
     navigation.navigate('HomeStack');
-    console.log('place order');
+    console.log('placed order');
   };
 
   return (
@@ -149,34 +156,26 @@ const CheckoutScreen = ({
         </View>
         {/* pick a delivery address from the user datastore address list */}
         <View>
-          <Picker
-            selectedValue={checkoutAddress}
-            onValueChange={setCheckoutAddress}>
-            {addressList.map((address, i) => (
-              <Picker.Item
-                key={`addressItem-${address.label}-${i}`}
-                label={`${address.city}: ${address.addressText}`}
-                value={address.label}
-              />
-            ))}
-          </Picker>
-        </View>
-        {/* choose payment methode: for now just choose to post order to database */}
-        <View>
-          <Picker
-            selectedValue={paymentMethod}
-            onValueChange={setPaymentMethod}>
-            <Picker.Item
-              key={'paymentMethod-1'}
-              label={'Cash On Delivery'}
-              value={'CashOnDelivery'}
-            />
-            <Picker.Item
-              key={'paymentMethod-2'}
-              label={'Credit Card'}
-              value={'CreditCard'}
-            />
-          </Picker>
+          <RNPickerSelect
+            style={bluePickerStyles}
+            placeholder={{label: 'select an Address...'}}
+            onValueChange={(value: string) => setCheckoutAddress(value)}
+            items={addressList.map(a => {
+              return {
+                label: `${a.city}: ${a.addressText}`,
+                value: a.label,
+              };
+            })}
+          />
+          <RNPickerSelect
+            style={bluePickerStyles}
+            placeholder={{label: 'payment method'}}
+            onValueChange={(value: string) => setPaymentMethod(value)}
+            items={[
+              {label: 'Cash On Delivery', value: 'CashOnDelivery'},
+              {label: 'Credit Card', value: 'CreditCard'},
+            ]}
+          />
         </View>
         {/* Delivery Notes */}
         <TextInput

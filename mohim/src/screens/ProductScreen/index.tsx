@@ -80,7 +80,6 @@ const ProductScreen = ({
       selectedQuantity: quantity,
       selectedSize,
       selectedColor,
-      selectedModel,
       selectedWeight: selectedWeight ? parseInt(selectedWeight, 10) : undefined,
       trash: false,
       productID: product.id,
