@@ -108,6 +108,7 @@ export declare class CartProduct {
   readonly cartID?: string;
   readonly cart?: Cart;
   readonly trash?: boolean;
+  readonly selectedModel?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<CartProduct, CartProductMetaData>);

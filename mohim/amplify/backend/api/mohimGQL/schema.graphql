@@ -58,6 +58,7 @@ type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{
   cartID: ID
   cart: Cart @connection
   trash: Boolean
+  selectedModel: String
 }
 
 type Cart @model @auth(rules: [{allow: public}, {allow: private}]) {

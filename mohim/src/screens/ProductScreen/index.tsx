@@ -78,6 +78,7 @@ const ProductScreen = ({
     const cartProductDetails = {
       userSub: user.attributes.sub,
       selectedQuantity: quantity,
+      selectedModel,
       selectedSize,
       selectedColor,
       selectedWeight: selectedWeight ? parseInt(selectedWeight, 10) : undefined,
@@ -87,16 +88,18 @@ const ProductScreen = ({
       cartID: userCart.id,
       cartProductCartId: userCart.id,
     };
-    // query to create new cartProduct: it returns the newly crerated cartProduct
-    await API.graphql({
-      query: mutations.createCartProduct,
-      variables: {input: cartProductDetails},
-    }).catch((err: any) =>
+    try {
+      // query to create new cartProduct: it returns the newly crerated cartProduct
+      await API.graphql({
+        query: mutations.createCartProduct,
+        variables: {input: cartProductDetails},
+      });
+    } catch (err: any) {
       console.log(
         'ProductScreen onBuyNow posting new cartProduct query err: ',
         err,
-      ),
-    );
+      );
+    }
     navigation.goBack();
     navigation.navigate('shoppingCartStack');
   };
