@@ -1,29 +1,27 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    // backgroundColor: 'red',
+  },
   title: {
     marginVertical: 20,
     paddingLeft: 10,
   },
-  titleText: {
-    fontFamily: 'helvetica',
-    fontSize: 20,
-    fontWeight: 'bold',
+  ordersView: {
+    // flex: 1,
+    // backgroundColor: 'red',
   },
-  infoContainer: {
-    paddingHorizontal: 10,
-  },
-  infoItem: {
-    fontFamily: 'helvetica',
-    fontSize: 15,
-    color: '#636363',
-    paddingVertical: 15,
-    marginVertical: 5,
-    paddingLeft: 5,
+  order: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 5,
     borderWidth: 1,
     borderColor: 'grey',
-    borderRadius: 5,
-    backgroundColor: '#e6e6e6',
+    borderRadius: 8,
+    padding: 10,
+    // backgroundColor: 'red',
   },
 });
 
