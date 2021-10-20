@@ -27,11 +27,14 @@ const ProfileScreen = ({
   const handleActionInfo = () => {
     navigation.navigate('AccountInfoScreen');
   };
-  const handleActionLanguage = () => {
-    navigation.navigate('LanguageScreen');
-  };
   const handleActionAddress = () => {
     navigation.navigate('AccountAddressScreen');
+  };
+  const handleActionOrderHistory = () => {
+    navigation.navigate('AccountOrderHistoryScreen');
+  };
+  const handleActionLanguage = () => {
+    navigation.navigate('LanguageScreen');
   };
   const handleActionLogout = async () => {
     await Auth.signOut().then(() => {
@@ -82,7 +85,7 @@ const ProfileScreen = ({
             title={'Wish List'}
           />
           <ProfileAction
-            onPress={handleActionInfo}
+            onPress={handleActionOrderHistory}
             icon={<MaterialIcons name="history" color={'#52aebc'} size={30} />}
             title={'Order History'}
           />
