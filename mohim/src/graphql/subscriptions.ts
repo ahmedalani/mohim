@@ -533,6 +533,9 @@ export const onCreateCartProduct = /* GraphQL */ `
       productID
       cartID
       trash
+      selectedModel
+      purchased
+      orderID
       _version
       _deleted
       _lastChangedAt
@@ -605,6 +608,9 @@ export const onUpdateCartProduct = /* GraphQL */ `
       productID
       cartID
       trash
+      selectedModel
+      purchased
+      orderID
       _version
       _deleted
       _lastChangedAt
@@ -677,6 +683,9 @@ export const onDeleteCartProduct = /* GraphQL */ `
       productID
       cartID
       trash
+      selectedModel
+      purchased
+      orderID
       _version
       _deleted
       _lastChangedAt
@@ -759,6 +768,9 @@ export const onCreateCart = /* GraphQL */ `
           productID
           cartID
           trash
+          selectedModel
+          purchased
+          orderID
           _version
           _deleted
           _lastChangedAt
@@ -793,6 +805,9 @@ export const onUpdateCart = /* GraphQL */ `
           productID
           cartID
           trash
+          selectedModel
+          purchased
+          orderID
           _version
           _deleted
           _lastChangedAt
@@ -827,6 +842,9 @@ export const onDeleteCart = /* GraphQL */ `
           productID
           cartID
           trash
+          selectedModel
+          purchased
+          orderID
           _version
           _deleted
           _lastChangedAt
@@ -867,6 +885,29 @@ export const onCreateOrder = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      orderCartProduct {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          trash
+          selectedModel
+          purchased
+          orderID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
       }
       cart {
         id
@@ -914,6 +955,29 @@ export const onUpdateOrder = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      orderCartProduct {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          trash
+          selectedModel
+          purchased
+          orderID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       cart {
         id
         userSub
@@ -959,6 +1023,29 @@ export const onDeleteOrder = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      orderCartProduct {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          trash
+          selectedModel
+          purchased
+          orderID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
       }
       cart {
         id

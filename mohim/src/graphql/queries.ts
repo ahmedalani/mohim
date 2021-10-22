@@ -511,6 +511,9 @@ export const getCartProduct = /* GraphQL */ `
       productID
       cartID
       trash
+      selectedModel
+      purchased
+      orderID
       _version
       _deleted
       _lastChangedAt
@@ -588,6 +591,9 @@ export const listCartProducts = /* GraphQL */ `
         productID
         cartID
         trash
+        selectedModel
+        purchased
+        orderID
         _version
         _deleted
         _lastChangedAt
@@ -654,6 +660,9 @@ export const syncCartProducts = /* GraphQL */ `
         productID
         cartID
         trash
+        selectedModel
+        purchased
+        orderID
         _version
         _deleted
         _lastChangedAt
@@ -719,6 +728,9 @@ export const getCart = /* GraphQL */ `
           productID
           cartID
           trash
+          selectedModel
+          purchased
+          orderID
           _version
           _deleted
           _lastChangedAt
@@ -818,6 +830,29 @@ export const getOrder = /* GraphQL */ `
         createdAt
         updatedAt
       }
+      orderCartProduct {
+        items {
+          id
+          userSub
+          selectedQuantity
+          selectedSize
+          selectedColor
+          selectedWeight
+          productID
+          cartID
+          trash
+          selectedModel
+          purchased
+          orderID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       cart {
         id
         userSub
@@ -868,6 +903,10 @@ export const listOrders = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        orderCartProduct {
+          nextToken
+          startedAt
         }
         cart {
           id
@@ -924,6 +963,10 @@ export const syncOrders = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
+        }
+        orderCartProduct {
+          nextToken
+          startedAt
         }
         cart {
           id

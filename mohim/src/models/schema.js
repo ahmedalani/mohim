@@ -616,6 +616,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "purchased": {
+                    "name": "purchased",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "orderID": {
+                    "name": "orderID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -646,6 +660,15 @@ export const schema = {
                         "name": "byCart",
                         "fields": [
                             "cartID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byOrder",
+                        "fields": [
+                            "orderID"
                         ]
                     }
                 },
@@ -850,6 +873,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "orderCartProduct": {
+                    "name": "orderCartProduct",
+                    "isArray": true,
+                    "type": {
+                        "model": "CartProduct"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "orderID"
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -904,5 +941,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "5392b173e660c797b266ec4fa6f9bd4e"
+    "version": "1e780fe27255aac0ff59655d7f90dc63"
 };

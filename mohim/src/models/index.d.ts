@@ -109,6 +109,8 @@ export declare class CartProduct {
   readonly cart?: Cart;
   readonly trash?: boolean;
   readonly selectedModel?: string;
+  readonly purchased?: boolean;
+  readonly orderID?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<CartProduct, CartProductMetaData>);
@@ -137,6 +139,7 @@ export declare class Order {
   readonly addressID: string;
   readonly address?: Address;
   readonly trash?: boolean;
+  readonly orderCartProduct?: (CartProduct | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Order, OrderMetaData>);

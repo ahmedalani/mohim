@@ -46,7 +46,7 @@ type Address @model @auth(rules: [{allow: public}, {allow: private}]) {
   trash: Boolean
 }
 
-type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{allow: public}, {allow: private}]) {
+type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{allow: public}, {allow: private}]) @key(name: "byOrder", fields: ["orderID"]) {
   id: ID!
   userSub: String!
   selectedQuantity: Int!
@@ -59,6 +59,8 @@ type CartProduct @model @key(name: "byCart", fields: ["cartID"]) @auth(rules: [{
   cart: Cart @connection
   trash: Boolean
   selectedModel: String
+  purchased: Boolean
+  orderID: ID
 }
 
 type Cart @model @auth(rules: [{allow: public}, {allow: private}]) {
@@ -79,5 +81,6 @@ type Order @model @auth(rules: [{allow: public}, {allow: private}]) {
   addressID: ID!
   address: Address @connection
   trash: Boolean
+  orderCartProduct: [CartProduct] @connection(keyName: "byOrder", fields: ["id"])
 }
  

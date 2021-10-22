@@ -78,6 +78,7 @@ const AccountOrderHistoryScreen = ({
       setOrdersList(newOrderListState);
     };
     fetchOrders();
+    return () => {};
   }, [user]);
 
   return (
